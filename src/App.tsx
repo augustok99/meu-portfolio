@@ -5,18 +5,20 @@ import Button from "./components/Button/Button";
 import Text from "./components/Text/Text";
 import TechCarousel from "./components/TechCarousel/TechCarousel";
 import CardProject from "./components/CardProject/CardProject";
+import Footer from "./components/Footer/Footer";
+import About from "./components/About/About";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-[#040013] via-[#0a001e] to-[#1a1a40]">
       <Header />
       <Hero />
       <Button />
-      <div>
-        <Text />
-        <TechCarousel />
-        <CardProject />
-      </div>
+      <Text />
+      <TechCarousel />
+      <CardProject />
+      <About />
+      <Footer />
     </div>
   );
 }

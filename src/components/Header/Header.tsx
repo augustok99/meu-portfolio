@@ -6,7 +6,7 @@ const Header = () => {
     <div className="pl-28 pt-12">
       <header>
         <div className="justify-start flex gap-2 items-center">
-          <h1 className="text-4xl font-semibold font-montserrat italic text-white">
+          <h1 className="text-3xl font-semibold font-montserrat italic text-white">
             @codes.augusto
           </h1>
           <span className="text-4xl text-emerald-600">

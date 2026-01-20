@@ -3,7 +3,7 @@ import { Zap, PhoneCall } from "lucide-react";
 
 const Button = () => {
   return (
-    <div className="flex justify-start pl-28">
+    <div className="flex justify-center mt-12">
       <div className="grid grid-cols-2 gap-5">
         <motion.button
           whileHover={{ scale: 1.05 }}

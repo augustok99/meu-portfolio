@@ -1,5 +1,10 @@
 import { FaReact, FaNodeJs, FaDocker } from "react-icons/fa";
-import { SiTypescript, SiTailwindcss, SiPostgresql } from "react-icons/si";
+import {
+  SiTypescript,
+  SiTailwindcss,
+  SiPython,
+  SiPostgresql,
+} from "react-icons/si";
 import { GrMysql } from "react-icons/gr";
 import type { IconType } from "react-icons";
 import { useEffect, useRef, useState } from "react";
@@ -18,6 +23,7 @@ const TechCarousel = () => {
     { icon: SiPostgresql, name: "PostgreSQL" },
     { icon: GrMysql, name: "MySQL" },
     { icon: FaDocker, name: "Docker" },
+    { icon: SiPython, name: "Python" },
   ];
   // Quantas vezes repetir a sequência dentro de cada bloco (calculado dinamicamente)
   const [repetitions, setRepetitions] = useState<number>(6);
@@ -155,7 +161,7 @@ const TechCarousel = () => {
   };
 
   return (
-    <section className="relative w-full overflow-hidden py-16">
+    <section className="relative w-full overflow-hidden py-16 mt-4">
       {/* Fade esquerda */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-32 bg-linear-to-r to-transparent" />
 
