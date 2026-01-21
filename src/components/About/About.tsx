@@ -29,11 +29,11 @@ const Typewriter: React.FC<TypewriterProps> = ({
   const [canStart, setCanStart] = useState(!startOnView);
   const elRef = useRef<HTMLParagraphElement | null>(null);
 
-  // start typing when canStart becomes true
+  // começa a digitar quando canStart se torna true
   useEffect(() => {
     if (!canStart) return;
 
-    // Defer state resets to avoid synchronous setState inside effect (prevent cascading renders)
+    // Adia a redefinição do estado para evitar setState síncrono dentro do efeito (evita renderizações em cascata)
     const initId = window.setTimeout(() => {
       setIndex(0);
       setTypingComplete(false);
@@ -57,24 +57,46 @@ const Typewriter: React.FC<TypewriterProps> = ({
     };
   }, [text, speed, canStart]);
 
-  // observe element to start typing when it enters viewport
+  // observa o elemento para começar a digitar quando ele entrar na viewport
   useEffect(() => {
     if (!startOnView) return;
     const el = elRef.current;
     if (!el) return;
+
+    let leaveTimeout: number | null = null;
+    // increase debounce and add rootMargin to avoid flicker when only a
+    // sliver of the paragraph is visible during scrolling
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          // consider visible when any pixel intersects
+          if (entry.intersectionRatio > 0) {
+            if (leaveTimeout) {
+              clearTimeout(leaveTimeout);
+              leaveTimeout = null;
+            }
+            // Quando o elemento entra na viewport, reinicia o state
+            setIndex(0);
+            setTypingComplete(false);
+            setCursorVisible(true);
             setCanStart(true);
-            obs.disconnect();
+          } else {
+            // Debounce the leave to avoid flicker when only a sliver is visible
+            if (leaveTimeout) clearTimeout(leaveTimeout);
+            leaveTimeout = window.setTimeout(() => {
+              setCanStart(false);
+              leaveTimeout = null;
+            }, 300);
           }
         });
       },
-      { threshold: 0.2 },
+      { threshold: [0], rootMargin: "0px 0px -10px 0px" },
     );
     obs.observe(el);
-    return () => obs.disconnect();
+    return () => {
+      obs.disconnect();
+      if (leaveTimeout) clearTimeout(leaveTimeout);
+    };
   }, [startOnView]);
 
   // Blink cursor via JS
@@ -124,7 +146,7 @@ const About = () => {
   useEffect(() => {}, [controls]);
 
   return (
-    <div className="justify-center grid gap-14 mt-12">
+    <div className="justify-center grid gap-14 mt-45">
       <h1 className="text-white text-4xl flex justify-center items-center font-semibold font-poppins mt-12 italic">
         Sobre mim
       </h1>

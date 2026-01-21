@@ -20,10 +20,17 @@ export default function useInViewAnimation(options: Options = {}): {
     const el = ref.current;
     if (!el) return;
 
+    let leaveTimeout: number | null = null;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          // consider visible when any pixel intersects
+          if (entry.intersectionRatio > 0) {
+            if (leaveTimeout) {
+              clearTimeout(leaveTimeout);
+              leaveTimeout = null;
+            }
             controls.start({
               opacity: 1,
               y: 0,
@@ -34,22 +41,28 @@ export default function useInViewAnimation(options: Options = {}): {
             });
             if (options.once) observer.disconnect();
           } else {
-            if (!options.once) {
-              // reset instantly so the entrance animation can replay cleanly
-              controls.set({ opacity: 0, y: 40 });
-            }
+            if (options.once) return;
+            // debounce leaving to avoid flicker when only a sliver is visible
+            if (leaveTimeout) clearTimeout(leaveTimeout);
+            leaveTimeout = window.setTimeout(() => {
+              controls.start({ opacity: 0, y: 40 });
+              leaveTimeout = null;
+            }, 300);
           }
         });
       },
       {
-        threshold: options.threshold ?? 0.2,
-        rootMargin: options.rootMargin ?? "0px",
+        threshold: options.threshold ?? 0,
+        rootMargin: options.rootMargin ?? "0px 0px -10px 0px",
       },
     );
 
     observer.observe(el);
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (leaveTimeout) clearTimeout(leaveTimeout);
+    };
   }, [
     controls,
     options.once,
