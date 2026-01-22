@@ -4,10 +4,10 @@ import {
   SiPython,
   SiGithub,
   SiJavascript,
-  SiReact,
-  SiTypescript,
   SiDiscord,
+  SiWhatsapp,
 } from "react-icons/si";
+import { RiFileExcel2Line } from "react-icons/ri";
 import type { IconType } from "react-icons";
 
 const Icons = ({ icons }: { icons: { icon: IconType; name: string }[] }) => {
@@ -85,7 +85,7 @@ function ProjectCard({
               });
               imgControls.start({
                 y: 0,
-                scale: 1,
+                scale: 1.16,
                 transition: { duration: 0.2 },
               });
               leaveTimeout = null;
@@ -125,14 +125,13 @@ function ProjectCard({
               onDragStart={(e) => e.preventDefault()}
               className="rounded-xl w-full h-full object-cover select-none"
               alt=""
-              initial={{ y: 0, scale: 1.06 }}
-              whileHover={{ scale: 1.12 }}
+              initial={{ y: 0, scale: 1.16 }}
+              whileHover={{ scale: 1.32 }}
               animate={imgControls}
-              transition={{ type: "spring", stiffness: 120, damping: 16 }}
               style={{ transformOrigin: "center" }}
             />
           ) : (
-            <div className="w-full h-full rounded-xl bg-white/5 flex items-center justify-center text-xs text-white/60">
+            <div className="w-full h-full rounded-2xl bg-white/5 flex items-center justify-center text-xs text-white/60">
               Sem imagem
             </div>
           )}
@@ -181,7 +180,7 @@ export function CardProject() {
           }
         />
         <ProjectCard
-          imgSrc=""
+          imgSrc="../../../imgs/turcb.png"
           description={
             "TurCB - Um guia turistico virtual, que dispara informações turisticas relevantes para a cidade de Corumbá-MS desenvolvido com Javascript."
           }
@@ -189,13 +188,14 @@ export function CardProject() {
             <Icons
               icons={[
                 { icon: SiJavascript, name: "JavaScript" },
-                { icon: SiTypescript, name: "TypeScript" },
+                { icon: SiGithub, name: "GitHub" },
+                { icon: SiWhatsapp, name: "WhatsApp" },
               ]}
             />
           }
         />
         <ProjectCard
-          imgSrc=""
+          imgSrc="../../../imgs/scraping_gpu.png"
           description={
             "Web Scraping - Raspagem de dados de GPU de um site e-commerce, feito com uso das bibliotecas Selenium, OS, pandas, re, math"
           }
@@ -203,7 +203,8 @@ export function CardProject() {
             <Icons
               icons={[
                 { icon: SiPython, name: "Python" },
-                { icon: SiReact, name: "React" },
+                { icon: SiGithub, name: "GitHub" },
+                { icon: RiFileExcel2Line, name: "Excel" },
               ]}
             />
           }
