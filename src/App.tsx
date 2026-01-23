@@ -5,12 +5,12 @@ import Button from "./components/Button/Button";
 import Text from "./components/Text/Text";
 import TechCarousel from "./components/TechCarousel/TechCarousel";
 import CardProject from "./components/CardProject/CardProject";
-import Footer from "./components/Footer/Footer";
 import About from "./components/About/About";
+import Contact from "./components/Contact/Contact";
 
 function App() {
   return (
-    <div className="min-h-screen bg-[#090520] via-[#0a001e] to-[#343485]">
+    <div className="min-h-screen bg-[#0e0930]">
       <Header />
       <Hero />
       <Button />
@@ -18,7 +18,7 @@ function App() {
       <TechCarousel />
       <CardProject />
       <About />
-      <Footer />
+      <Contact />
     </div>
   );
 }

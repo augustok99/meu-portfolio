@@ -148,21 +148,38 @@ const Typewriter: React.FC<TypewriterProps> = ({
       // schedule start asynchronously to avoid synchronous setState in effect
       startTimeoutId = window.setTimeout(() => startAnim(), 0);
     } else {
-      // don't keep intervals running when not allowed
-      // defer reset to avoid calling setState synchronously inside an effect
-      startTimeoutId = window.setTimeout(() => clearAnim(true), 0);
+      // If canStart becomes false while an animation is running, do NOT force-clear
+      // immediately — allow the running animation to finish. Only clear immediately
+      // when nothing is running.
+      if (!animRef.current.running) {
+        // defer reset to avoid calling setState synchronously inside an effect
+        startTimeoutId = window.setTimeout(() => clearAnim(true), 0);
+      }
+      // otherwise, leave the running animation alone; it will clear itself when
+      // it completes (respecting leaveRequested/post-complete timers)
     }
 
     return () => {
-      // If props change/unmount, ensure we clear timers
+      // If props change, only clear the scheduled start timeout here.
+      // Do NOT call clearAnim() here because that would cancel a running
+      // animation when `canStart` toggles; we want running animations to
+      // finish naturally and be cleared by their own completion logic.
       if (startTimeoutId) {
         clearTimeout(startTimeoutId);
         startTimeoutId = null;
       }
-      clearAnim(false);
     };
     // Intentionally include cleanText so a text change restarts animation.
   }, [canStart, speed, cleanText]);
+
+  // Ensure full cleanup on unmount: if the component unmounts while an
+  // animation is running, force-clear everything to avoid leaking timers.
+  useEffect(() => {
+    return () => {
+      clearAnim(true);
+    };
+    // empty deps -> run once on unmount
+  }, []);
 
   useEffect(() => {
     if (!startOnView) return;

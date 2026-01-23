@@ -7,6 +7,7 @@ type Options = {
   once?: boolean; // if true, animation runs only once
   duration?: number;
   ease?: Transition["ease"];
+  leaveGrace?: number; // ms to wait after leaving before hiding
 };
 
 export default function useInViewAnimation(options: Options = {}): {
@@ -21,6 +22,7 @@ export default function useInViewAnimation(options: Options = {}): {
     if (!el) return;
 
     let leaveTimeout: number | null = null;
+    const LEAVE_GRACE = options.leaveGrace ?? 300;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -47,7 +49,7 @@ export default function useInViewAnimation(options: Options = {}): {
             leaveTimeout = window.setTimeout(() => {
               controls.start({ opacity: 0, y: 40 });
               leaveTimeout = null;
-            }, 300);
+            }, LEAVE_GRACE);
           }
         });
       },

@@ -45,21 +45,23 @@ function ProjectCard({
     const el = ref.current;
     if (!el) return;
 
-    // debounce logic: only consider the element out-of-view if it stays
-    // fully non-intersecting for a short timeout. This prevents flicker
-    // when a sliver of the card is visible during scrolling.
+    // We'll allow the entrance animation to finish even if the user scrolls away.
+    // On leave we schedule a hide after a grace period (3s). If the user returns
+    // before that, we cancel the hide. This avoids flicker and ensures a single
+    // consistent animation lifecycle.
     let leaveTimeout: number | null = null;
-    // increase debounce to avoid flicker and use rootMargin so the element
-    // remains considered "in view" a bit longer while scrolling
+    const visibleRef = { current: false } as { current: boolean };
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.intersectionRatio > 0) {
-            // still visible: cancel any pending hide
+            // still visible: cancel any pending hide and ensure enter animation
             if (leaveTimeout) {
               clearTimeout(leaveTimeout);
               leaveTimeout = null;
             }
+            visibleRef.current = true;
             controls.start({
               opacity: 1,
               y: 0,
@@ -75,9 +77,12 @@ function ProjectCard({
               },
             });
           } else {
-            // schedule hide with a short delay to avoid flicker
+            // schedule hide with a longer grace to allow the entrance animation
+            // to finish even if the element briefly leaves the viewport
             if (leaveTimeout) clearTimeout(leaveTimeout);
             leaveTimeout = window.setTimeout(() => {
+              leaveTimeout = null;
+              visibleRef.current = false;
               controls.start({
                 opacity: 0,
                 y: 40,
@@ -88,8 +93,7 @@ function ProjectCard({
                 scale: 1.16,
                 transition: { duration: 0.2 },
               });
-              leaveTimeout = null;
-            }, 300);
+            }, 3000);
           }
         });
       },
