@@ -17,6 +17,26 @@ const Typewriter: React.FC<TypewriterProps> = ({
   const [cursorVisible, setCursorVisible] = useState(true);
   const [canStart, setCanStart] = useState(!startOnView);
   const elRef = useRef<HTMLParagraphElement | null>(null);
+  // Animation controller to avoid concurrent intervals/timeouts between effects
+  const animRef = useRef<{
+    intervalId: number | null;
+    initTimeoutId: number | null;
+    generation: number;
+    running: boolean;
+    leaveTimeoutId: number | null;
+    postCompleteTimeoutId: number | null;
+    leaveRequested: boolean;
+  }>({
+    intervalId: null,
+    initTimeoutId: null,
+    generation: 0,
+    running: false,
+    leaveTimeoutId: null,
+    postCompleteTimeoutId: null,
+    leaveRequested: false,
+  });
+
+  const POST_COMPLETE_GRACE = 3000; // ms to wait after completion before force-clearing
 
   // Preprocess text to support a desktop-only break token (mdBreakToken).
   // We treat occurrences of mdBreakToken as zero-length inserts of
@@ -31,56 +51,162 @@ const Typewriter: React.FC<TypewriterProps> = ({
   }
   const cleanText = segments.join("");
 
-  useEffect(() => {
-    if (!canStart) return;
-
-    const initId = window.setTimeout(() => {
+  // Centralized start/stop helpers to prevent overlapping intervals/timeouts.
+  const clearAnim = (reset = false) => {
+    if (animRef.current.initTimeoutId) {
+      clearTimeout(animRef.current.initTimeoutId);
+      animRef.current.initTimeoutId = null;
+    }
+    if (animRef.current.intervalId) {
+      clearInterval(animRef.current.intervalId);
+      animRef.current.intervalId = null;
+    }
+    if (animRef.current.postCompleteTimeoutId) {
+      clearTimeout(animRef.current.postCompleteTimeoutId);
+      animRef.current.postCompleteTimeoutId = null;
+    }
+    // clear leaveRequested when force-clearing
+    animRef.current.leaveRequested = false;
+    animRef.current.running = false;
+    if (reset) {
       setIndex(0);
       setTypingComplete(false);
       setCursorVisible(true);
-    }, 0);
+    }
+  };
 
-    const id = window.setInterval(() => {
-      setIndex((i) => {
-        if (i >= cleanText.length) {
-          clearInterval(id);
-          setTypingComplete(true);
-          return i;
-        }
-        return i + 1;
-      });
-    }, speed);
+  // startAnim moved into the useEffect below to avoid changing identity across renders
+
+  useEffect(() => {
+    // Start/stop animation according to `canStart` and text changes.
+    let startTimeoutId: number | null = null;
+
+    const startAnim = () => {
+      // If already running, do nothing.
+      if (animRef.current.running) return;
+      // Bump generation to invalidate older intervals
+      animRef.current.generation += 1;
+      const gen = animRef.current.generation;
+
+      clearAnim(false);
+      animRef.current.initTimeoutId = window.setTimeout(() => {
+        setIndex(0);
+        setTypingComplete(false);
+        setCursorVisible(true);
+
+        animRef.current.intervalId = window.setInterval(() => {
+          setIndex((i) => {
+            // If generation changed, stop this interval.
+            if (gen !== animRef.current.generation) {
+              // clear this interval to avoid it running forever without advancing state
+              clearAnim(false);
+              return i;
+            }
+            if (i >= cleanText.length) {
+              // complete: clear interval and mark complete
+              if (animRef.current.intervalId) {
+                clearInterval(animRef.current.intervalId);
+                animRef.current.intervalId = null;
+              }
+              animRef.current.running = false;
+              setTypingComplete(true);
+              // If a leave was requested earlier (user left), clear immediately.
+              if (animRef.current.leaveRequested) {
+                // immediate clear since user already left
+                clearAnim(true);
+                setCanStart(false);
+              } else {
+                // start grace timer to clear/reset after a few seconds
+                if (animRef.current.postCompleteTimeoutId) {
+                  clearTimeout(animRef.current.postCompleteTimeoutId);
+                }
+                animRef.current.postCompleteTimeoutId = window.setTimeout(
+                  () => {
+                    animRef.current.postCompleteTimeoutId = null;
+                    clearAnim(true);
+                    setCanStart(false);
+                  },
+                  POST_COMPLETE_GRACE,
+                );
+              }
+              return i;
+            }
+            return i + 1;
+          });
+        }, speed);
+        animRef.current.running = true;
+        animRef.current.initTimeoutId = null;
+      }, 0);
+    };
+
+    if (canStart) {
+      // if there was a pending post-complete clear, cancel it (we're starting again)
+      if (animRef.current.postCompleteTimeoutId) {
+        clearTimeout(animRef.current.postCompleteTimeoutId);
+        animRef.current.postCompleteTimeoutId = null;
+      }
+      // schedule start asynchronously to avoid synchronous setState in effect
+      startTimeoutId = window.setTimeout(() => startAnim(), 0);
+    } else {
+      // don't keep intervals running when not allowed
+      // defer reset to avoid calling setState synchronously inside an effect
+      startTimeoutId = window.setTimeout(() => clearAnim(true), 0);
+    }
 
     return () => {
-      clearTimeout(initId);
-      clearInterval(id);
+      // If props change/unmount, ensure we clear timers
+      if (startTimeoutId) {
+        clearTimeout(startTimeoutId);
+        startTimeoutId = null;
+      }
+      clearAnim(false);
     };
-  }, [text, speed, canStart, cleanText]);
+    // Intentionally include cleanText so a text change restarts animation.
+  }, [canStart, speed, cleanText]);
 
   useEffect(() => {
     if (!startOnView) return;
     const el = elRef.current;
     if (!el) return;
 
-    let leaveTimeout: number | null = null;
+    // Snapshot the current animRef to avoid ref-change warnings in cleanup.
+    const anim = animRef.current;
+
+    // When element enters/leaves viewport: on leave, request clearing after grace but
+    // allow current animation to finish. On enter, cancel any pending leave.
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.intersectionRatio > 0) {
-            if (leaveTimeout) {
-              clearTimeout(leaveTimeout);
-              leaveTimeout = null;
+            // cancel pending leave timeout
+            if (anim.leaveTimeoutId) {
+              clearTimeout(anim.leaveTimeoutId);
+              anim.leaveTimeoutId = null;
             }
-            setIndex(0);
-            setTypingComplete(false);
-            setCursorVisible(true);
-            setCanStart(true);
+            // cancel a previous leave request
+            anim.leaveRequested = false;
+            // cancel any post-complete clear since user returned
+            if (anim.postCompleteTimeoutId) {
+              clearTimeout(anim.postCompleteTimeoutId);
+              anim.postCompleteTimeoutId = null;
+            }
+            // If already typing, don't restart it. If not typing and not complete, start.
+            if (!anim.running && !typingComplete) {
+              setCanStart(true);
+            }
           } else {
-            if (leaveTimeout) clearTimeout(leaveTimeout);
-            leaveTimeout = window.setTimeout(() => {
+            // schedule a leave request after grace period
+            if (anim.leaveTimeoutId) clearTimeout(anim.leaveTimeoutId);
+            anim.leaveTimeoutId = window.setTimeout(() => {
+              anim.leaveTimeoutId = null;
+              // mark that a leave was requested; do not forcibly stop running animation
+              anim.leaveRequested = true;
               setCanStart(false);
-              leaveTimeout = null;
-            }, 300);
+              // If nothing is running and typing already finished, clear immediately
+              if (!anim.running && typingComplete) {
+                clearAnim(true);
+              }
+            }, POST_COMPLETE_GRACE);
           }
         });
       },
@@ -89,9 +215,14 @@ const Typewriter: React.FC<TypewriterProps> = ({
     obs.observe(el);
     return () => {
       obs.disconnect();
-      if (leaveTimeout) clearTimeout(leaveTimeout);
+      if (anim.leaveTimeoutId) {
+        clearTimeout(anim.leaveTimeoutId);
+        anim.leaveTimeoutId = null;
+      }
+      // reset leaveRequested when unmounting
+      anim.leaveRequested = false;
     };
-  }, [startOnView]);
+  }, [startOnView, typingComplete]);
 
   useEffect(() => {
     if (!showCursor) return;
