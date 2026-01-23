@@ -7,4 +7,5 @@ export type TypewriterProps = {
   startOnView?: boolean;
   className?: string;
   style?: React.CSSProperties;
+  mdBreakToken?: string; // Token para quebra de linha em desktop
 };

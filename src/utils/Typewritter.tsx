@@ -55,7 +55,7 @@ const Typewriter: React.FC<TypewriterProps> = ({
       clearTimeout(initId);
       clearInterval(id);
     };
-  }, [text, speed, canStart]);
+  }, [text, speed, canStart, cleanText]);
 
   useEffect(() => {
     if (!startOnView) return;
@@ -119,7 +119,7 @@ const Typewriter: React.FC<TypewriterProps> = ({
       {(() => {
         const displayed = cleanText.slice(0, index);
         if (insertPositions.length === 0) return displayed;
-        const parts: Array<string | JSX.Element> = [];
+        const parts: Array<string | React.ReactNode> = [];
         let last = 0;
         insertPositions.forEach((pos, idx) => {
           if (pos <= displayed.length) {

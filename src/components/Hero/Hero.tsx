@@ -1,11 +1,12 @@
 import "../../index.css";
 import { motion } from "framer-motion";
+import { CodeXml } from "lucide-react";
 
 const Hero = () => {
   return (
     <div className="mt-12 justify-center flex">
       {/* COLUNA DIREITA */}
-      <div className="flex flex-col gap-12 items-center justify-center pl-10">
+      <div className="flex flex-col gap-2 items-center justify-center pl-10">
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -22,6 +23,7 @@ const Hero = () => {
             <span className="italic text-emerald-700">memoráveis.</span>
           </span>
         </motion.h1>
+        <CodeXml className="md:w-17 font-semibold md:h-20 w-12 h-12 text-emerald-700" />
       </div>
     </div>
   );
