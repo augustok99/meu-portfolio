@@ -49,6 +49,68 @@ const About = () => {
 
   useEffect(() => {}, [controls]);
 
+  // Pause/resume framer animations when the page visibility changes to avoid
+  // stale RAF/timers when the tab was frozen; resume only if the element is
+  // currently in view.
+  useEffect(() => {
+    const el = typeRef.current;
+
+    const resumeIfInView = (forceReset = false) => {
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const inView = r.top < window.innerHeight && r.bottom > 0;
+      if (!inView) return;
+
+      // Ensure we reset to the hidden state then animate in so we don't
+      // end up with stale transforms/opacity after a page freeze.
+      try {
+        if (forceReset) {
+          // set immediate values synchronously, then animate
+          controls.set({ opacity: 0, y: 40 });
+        }
+        // start the visible animation asynchronously to avoid sync setState
+        window.setTimeout(() => {
+          setShowType(true);
+          controls.start({
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8, ease: "easeOut" },
+          });
+        }, 0);
+      } catch (err) {
+        console.error("About resume error", err);
+      }
+    };
+
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") {
+        try {
+          controls.stop();
+        } catch (e) {
+          console.error(e);
+        }
+        // request that the typewriter stop; it will restart on visible
+        setShowType(false);
+      } else {
+        // On becoming visible, force a quick reset then resume if in view.
+        resumeIfInView(true);
+      }
+    };
+
+    const onPageShow = (_e: PageTransitionEvent) => {
+      // Always attempt to resume animations on pageshow; if the element
+      // is in view, reset and start to avoid stale RAF/state.
+      resumeIfInView(true);
+    };
+
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("pageshow", onPageShow as EventListener);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("pageshow", onPageShow as EventListener);
+    };
+  }, [controls]);
+
   return (
     <div className="justify-center grid gap-14 mt-[15rem]">
       <h1 className="text-white text-4xl flex justify-center items-center font-semibold font-poppins mt-12 ">
@@ -64,8 +126,13 @@ const About = () => {
           >
             <img
               src="/imgs/img_perfil.png"
+              loading="lazy"
+              decoding="async"
+              width={288}
+              height={432}
               className="rounded-2xl w-full h-full object-cover"
               alt="Model"
+              style={{ willChange: "transform", backfaceVisibility: "hidden" }}
             />
           </motion.div>
         </div>

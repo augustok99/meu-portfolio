@@ -100,11 +100,12 @@ const Typewriter: React.FC<TypewriterProps> = ({
         setTypingComplete(false);
         setCursorVisible(true);
 
-        // Use requestAnimationFrame with time accumulation so rapid speeds
-        // don't spawn many interval ticks and to play nicer with the browser's
-        // rendering loop. Also clamp a minimum sensible speed to avoid
-        // extremely frequent updates that can cause jank on low-end devices.
-        const effectiveSpeed = Math.max(speed, 2);
+        // Use requestAnimationFrame with time accumulation so we play nicer
+        // with the browser's rendering loop. Clamp a minimum sensible speed
+        // (16ms ~= 60fps) to avoid extremely frequent updates that can
+        // cause jank on low-end devices. When multiple frames have passed
+        // advance by a batch to reduce setState frequency.
+        const effectiveSpeed = Math.max(speed, 16);
         let last = performance.now();
         let acc = 0;
 
@@ -118,7 +119,11 @@ const Typewriter: React.FC<TypewriterProps> = ({
           last = now;
           acc += delta;
           if (acc >= effectiveSpeed) {
-            acc = 0;
+            // Calculate how many steps worth of characters we can advance
+            // in this tick and subtract only that amount from the accumulator
+            // so we don't lose fractional time and to avoid many tiny updates.
+            const steps = Math.max(1, Math.floor(acc / effectiveSpeed));
+            acc -= steps * effectiveSpeed;
             setIndex((i) => {
               if (gen !== animRef.current.generation) {
                 // generation invalidated while in updater
@@ -151,7 +156,8 @@ const Typewriter: React.FC<TypewriterProps> = ({
                 }
                 return i;
               }
-              return i + 1;
+              // advance by 'steps', but clamp to the text length
+              return Math.min(cleanText.length, i + steps);
             });
           }
           animRef.current.rafId = window.requestAnimationFrame(tick);
@@ -203,6 +209,40 @@ const Typewriter: React.FC<TypewriterProps> = ({
       clearAnim(true);
     };
     // empty deps -> run once on unmount
+  }, []);
+
+  // Handle page visibility changes: when the tab becomes hidden (or the
+  // page is frozen) force-clear running animations to avoid stale timers and
+  // large deltas when the tab is resumed. When visible again, allow the
+  // animation to restart if appropriate.
+  useEffect(() => {
+    const onVisibility = () => {
+      if (typeof document === "undefined") return;
+      if (document.visibilityState === "hidden") {
+        // Force-clear to avoid timers/raf left running in background.
+        clearAnim(true);
+        setCanStart(false);
+      } else {
+        // When tab becomes visible again, allow animation to start.
+        // Schedule asynchronously to avoid sync state updates.
+        window.setTimeout(() => setCanStart(true), 0);
+      }
+    };
+
+    const onPageShow = (e: PageTransitionEvent) => {
+      // pageshow can be fired on back/forward navigation — restart.
+      if (e.persisted) {
+        window.setTimeout(() => setCanStart(true), 0);
+      }
+    };
+
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("pageshow", onPageShow as EventListener);
+
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("pageshow", onPageShow as EventListener);
+    };
   }, []);
 
   useEffect(() => {

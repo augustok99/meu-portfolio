@@ -30,7 +30,7 @@ const Contact = () => {
                     },
                   }}
                   style={{ cursor: "pointer" }}
-                  className="gap-9 flex flex-col items-start border-2 w-[19rem] px-5 py-2 rounded-xl hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
+                  className="gap-9 flex flex-col items-start border-2 w-[19rem] px-5 py-2 rounded-lg hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
                   aria-label="whatsapp"
                 >
                   <div className="flex gap-3 items-center justify-center">
@@ -51,7 +51,7 @@ const Contact = () => {
                     },
                   }}
                   style={{ cursor: "pointer" }}
-                  className="gap-9 flex flex-col items-start border-2 w-[19rem] px-5 py-2 rounded-xl hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
+                  className="gap-9 flex flex-col items-start border-2 w-[19rem] px-5 py-2 rounded-lg hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
                   aria-label="instagram"
                 >
                   <div className="flex gap-3 items-center justify-center">
@@ -72,7 +72,7 @@ const Contact = () => {
                     },
                   }}
                   style={{ cursor: "pointer" }}
-                  className="gap-9 flex flex-col items-start border-2 w-[19rem] px-5 py-2 rounded-xl hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
+                  className="gap-9 flex flex-col items-start border-2 w-[19rem] px-5 py-2 rounded-lg hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
                   aria-label="linkedin"
                 >
                   <div className="flex gap-3 items-center justify-center">
@@ -93,7 +93,7 @@ const Contact = () => {
                     },
                   }}
                   style={{ cursor: "pointer" }}
-                  className="gap-9 flex flex-col items-start border-2 w-[19rem] px-5 py-2 rounded-xl hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
+                  className="gap-9 flex flex-col items-start border-2 w-[19rem] px-5 py-2 rounded-lg hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
                   aria-label="github"
                 >
                   <div className="flex gap-3 items-center justify-center">
@@ -107,7 +107,7 @@ const Contact = () => {
             </div>
           </div>
           <div className="h-full w-1/2 rounded-2xl bg-[#0e0930] via-[#0a001e] to-[#343485] flex items-center justify-center">
-            <div className="w-[26rem]rounded-xl p-6 shadow-lg">
+            <div className="w-[28rem] p-6 shadow-lg">
               <h2 className="text-[#f2f2f2] font-bold text-2xl mb-4">
                 Entre em contato <span className="text-[#189c70]">comigo</span>
               </h2>
@@ -184,7 +184,7 @@ function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <label className="text-sm font-p text-[#f2f2f2]">
+      <label className="font-poppins text-sm text-[#f2f2f2]">
         Estou interessado em...
       </label>
       <div className="flex flex-wrap gap-3 mt-2">
@@ -195,7 +195,7 @@ function ContactForm() {
               key={i}
               type="button"
               onClick={() => toggleInterest(i)}
-              className={`px-3 py-2 rounded-md text-sm border ${active ? "bg-[#219b72] text-white border-[#219b72]" : "bg-white text-gray-700 border-gray-300"}`}
+              className={`px-3 py-2 rounded-md text-sm border ${active ? "bg-[#219b72] text-white border-[#219b72] font-poppins" : "bg-white text-gray-700 font-poppins border-gray-300"}`}
             >
               {i}
             </button>
@@ -253,6 +253,7 @@ function ContactForm() {
                 resetForAnother();
               }
             }}
+            style={{ cursor: "pointer" }}
             disabled={loading}
             aria-disabled={loading}
             className="flex items-center gap-3 bg-gradient-to-r from-[#219b72] to-[#1f855c] text-white px-5 py-3 rounded-xl shadow-lg hover:shadow-xl transform transition-all duration-150 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"

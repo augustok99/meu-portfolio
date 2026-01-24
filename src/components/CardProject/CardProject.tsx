@@ -68,14 +68,18 @@ function ProjectCard({
               transition: { duration: 0.8, ease: "easeInOut" },
             });
             // start subtle bobbing animation on the image
+            // gentler bobbing to reduce rendering cost on low-end devices
             imgControls.start({
-              y: [0, -12, 0],
+              y: [0, -6, 0],
               transition: {
-                duration: 4.2,
+                duration: 3.6,
                 repeat: Infinity,
                 ease: "easeInOut",
               },
             });
+            // ensure we resume if page becomes visible again
+            // visibleRef marks whether we are considered visible
+            visibleRef.current = true;
           } else {
             // schedule hide with a longer grace to allow the entrance animation
             // to finish even if the element briefly leaves the viewport
@@ -100,11 +104,82 @@ function ProjectCard({
       { threshold: [0], rootMargin: "0px 0px -10px 0px" },
     );
 
+    // Handle page visibility to avoid animation jank when tab is frozen
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") {
+        // stop running animations
+        try {
+          controls.stop();
+        } catch (e) {
+          console.error(e);
+        }
+        try {
+          imgControls.stop();
+        } catch (e) {
+          console.error(e);
+        }
+      } else {
+        // When tab becomes visible, check if the element is actually in viewport
+        // (IntersectionObserver entries may have been missed while hidden).
+        try {
+          const rect = el.getBoundingClientRect();
+          const inView = rect.top < window.innerHeight && rect.bottom > 0;
+          if (inView) {
+            visibleRef.current = true;
+            controls.start({
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.8, ease: "easeInOut" },
+            });
+            imgControls.start({
+              y: [0, -6, 0],
+              transition: {
+                duration: 3.6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+            });
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    };
+
+    const onPageShow = () => {
+      try {
+        const rect = el.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight && rect.bottom > 0;
+        if (inView) {
+          visibleRef.current = true;
+          controls.start({
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8, ease: "easeInOut" },
+          });
+          imgControls.start({
+            y: [0, -6, 0],
+            transition: {
+              duration: 3.6,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("pageshow", onPageShow as EventListener);
+
     observer.observe(el);
 
     return () => {
       observer.disconnect();
       if (leaveTimeout) clearTimeout(leaveTimeout);
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("pageshow", onPageShow as EventListener);
     };
   }, [controls, imgControls]);
 
@@ -118,20 +193,22 @@ function ProjectCard({
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={controls}
-        className="flex flex-col items-center bg-gradient-to-r from-[#189c70] via-[#219b72] to-[#1f855c] gap-4 rounded-2xl w-[18rem] h-[27rem] md:w-[25rem] md:h-[29rem] p-4"
+        className="flex flex-col items-center bg-gradient-to-r from-[#189c70] via-[#219b72] to-[#1f855c] gap-4 rounded-2xl w-[18rem] h-[27rem] md:w-[25rem] shadow-lg shadow-[#08051a] md:h-[29rem] p-4"
       >
         <div className="mx-auto mt-4 flex rounded-2xl w-[16rem] h-[15rem]  md:w-[21rem] md:h-[14rem] select-none overflow-hidden">
           {imgSrc ? (
             <motion.img
               src={imgSrc}
+              loading="lazy"
+              decoding="async"
               draggable={false}
               onDragStart={(e) => e.preventDefault()}
               className="rounded-xl w-full h-full object-cover select-none"
               alt=""
               initial={{ y: 0, scale: 1.16 }}
-              whileHover={{ scale: 1.32 }}
+              whileHover={{ scale: 1.28 }}
               animate={imgControls}
-              style={{ transformOrigin: "center" }}
+              style={{ transformOrigin: "center", willChange: "transform" }}
             />
           ) : (
             <div className="w-full h-full rounded-2xl bg-white/5 flex items-center justify-center text-xs text-white/60">
