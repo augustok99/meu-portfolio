@@ -72,6 +72,7 @@ export default function useInViewAnimation(options: Options = {}): {
     options.ease,
     options.threshold,
     options.rootMargin,
+    options.leaveGrace,
   ]);
 
   return { ref, controls };

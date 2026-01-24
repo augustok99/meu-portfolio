@@ -104,7 +104,7 @@ const Typewriter: React.FC<TypewriterProps> = ({
         // don't spawn many interval ticks and to play nicer with the browser's
         // rendering loop. Also clamp a minimum sensible speed to avoid
         // extremely frequent updates that can cause jank on low-end devices.
-        const effectiveSpeed = Math.max(speed, 25);
+        const effectiveSpeed = Math.max(speed, 2);
         let last = performance.now();
         let acc = 0;
 

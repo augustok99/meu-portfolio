@@ -7,6 +7,7 @@ import TechCarousel from "./components/TechCarousel/TechCarousel";
 import CardProject from "./components/CardProject/CardProject";
 import About from "./components/About/About";
 import Contact from "./components/Contact/Contact";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <CardProject />
       <About />
       <Contact />
+      <Footer />
     </div>
   );
 }
