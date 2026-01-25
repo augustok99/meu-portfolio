@@ -1,17 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import type { TypewriterProps } from "../types/typewritterProps";
+import { useThemeContext } from "../context/useThemeContext";
 
 const Typewriter: React.FC<TypewriterProps> = ({
   text,
   speed = 16,
   showCursor = true,
   cursorChar = "|",
-  cursorColor = "#ffffff",
+  cursorColor,
   startOnView = false,
   className,
   style,
   mdBreakToken = "<md/>",
 }) => {
+  const { theme } = useThemeContext();
+  const resolvedCursorColor =
+    cursorColor ?? (theme === "dark" ? "#f2f2f2" : "#121212");
   const [index, setIndex] = useState(0);
   const [typingComplete, setTypingComplete] = useState(false);
   const [cursorVisible, setCursorVisible] = useState(true);
@@ -102,9 +106,7 @@ const Typewriter: React.FC<TypewriterProps> = ({
 
         // Use requestAnimationFrame with time accumulation so we play nicer
         // with the browser's rendering loop. Clamp a minimum sensible speed
-        // (16ms ~= 60fps) to avoid extremely frequent updates that can
-        // cause jank on low-end devices. When multiple frames have passed
-        // advance by a batch to reduce setState frequency.
+        // (16ms ~= 60fps) to allow smoother typing animations at 60fps.
         const effectiveSpeed = Math.max(speed, 16);
         let last = performance.now();
         let acc = 0;
@@ -354,7 +356,7 @@ const Typewriter: React.FC<TypewriterProps> = ({
         <span
           aria-hidden
           className="ml-1 inline-block"
-          style={{ color: cursorColor, opacity: cursorVisible ? 1 : 0 }}
+          style={{ color: resolvedCursorColor, opacity: cursorVisible ? 1 : 0 }}
         >
           {cursorChar}
         </span>

@@ -12,7 +12,7 @@ const Text = () => {
           WebkitHyphens: "none",
           msHyphens: "none",
         }}
-        className="text-[#F2F2F2] text-start text-2xl font-semibold font-poppins mt-45 md:mt-19 md:text-justify h-54"
+        className="text-current text-start text-2xl font-semibold font-poppins mt-45 md:mt-19 md:text-justify h-54 px-3 md:px-0"
       />
     </div>
   );

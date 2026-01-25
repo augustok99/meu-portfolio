@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import useInViewAnimation from "../../hooks/useInViewAnimation";
+import useInViewContext from "../../context/useInViewContext";
 import Typewriter from "../../utils/Typewritter";
 
 const About = () => {
@@ -15,37 +16,35 @@ const About = () => {
   // same 3s leave grace and avoid conflicting observers.
   const typeRef = useRef<HTMLDivElement | null>(null);
   const [showType, setShowType] = useState(false);
+  const { observe, unobserve } = useInViewContext();
 
   useEffect(() => {
     const el = typeRef.current;
     if (!el) return;
     let leaveTimeout: number | null = null;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.intersectionRatio > 0) {
-            if (leaveTimeout) {
-              clearTimeout(leaveTimeout);
-              leaveTimeout = null;
-            }
-            setShowType(true);
-          } else {
-            if (leaveTimeout) clearTimeout(leaveTimeout);
-            leaveTimeout = window.setTimeout(() => {
-              leaveTimeout = null;
-              setShowType(false);
-            }, 3000);
-          }
-        });
-      },
-      { threshold: [0], rootMargin: "0px 0px -10px 0px" },
-    );
-    obs.observe(el);
+
+    const cb = (entry: IntersectionObserverEntry) => {
+      if (entry.intersectionRatio > 0) {
+        if (leaveTimeout) {
+          clearTimeout(leaveTimeout);
+          leaveTimeout = null;
+        }
+        setShowType(true);
+      } else {
+        if (leaveTimeout) clearTimeout(leaveTimeout);
+        leaveTimeout = window.setTimeout(() => {
+          leaveTimeout = null;
+          setShowType(false);
+        }, 3000);
+      }
+    };
+
+    observe(el, cb);
     return () => {
-      obs.disconnect();
+      unobserve(el, cb);
       if (leaveTimeout) clearTimeout(leaveTimeout);
     };
-  }, []);
+  }, [observe, unobserve]);
 
   useEffect(() => {}, [controls]);
 
@@ -97,7 +96,7 @@ const About = () => {
       }
     };
 
-    const onPageShow = (_e: PageTransitionEvent) => {
+    const onPageShow = () => {
       // Always attempt to resume animations on pageshow; if the element
       // is in view, reset and start to avoid stale RAF/state.
       resumeIfInView(true);
@@ -113,7 +112,7 @@ const About = () => {
 
   return (
     <div className="justify-center grid gap-14 mt-[15rem]">
-      <h1 className="text-white text-4xl flex justify-center items-center font-semibold font-poppins mt-12 ">
+      <h1 className="text-current text-4xl flex justify-center items-center font-semibold font-poppins mt-12 ">
         Sobre mim
       </h1>
       <div className="flex flex-col md:flex-row items-center md:justify-between gap-12 md:gap-12">
@@ -130,7 +129,7 @@ const About = () => {
               decoding="async"
               width={288}
               height={432}
-              className="rounded-2xl w-full h-full object-cover"
+              className="rounded-2xl shadow-black shadow-md w-full h-full object-cover"
               alt="Model"
               style={{ willChange: "transform", backfaceVisibility: "hidden" }}
             />
@@ -143,7 +142,7 @@ const About = () => {
             }
             speed={14}
             startOnView={showType}
-            className="text-[1.13rem] text-justify leading-relaxed font-semibold font-poppins text-white max-w-[23rem] tracking-[-0.25px] md:tracking-[-0.15px] lg:tracking-[-0.08px] [word-spacing:-0.14rem] md:[word-spacing:-0.12rem] lg:[word-spacing:-0.12rem]"
+            className="text-[1.13rem] text-justify leading-relaxed font-semibold font-poppins text-current max-w-[23rem] tracking-[-0.25px] md:tracking-[-0.15px] lg:tracking-[-0.08px] [word-spacing:-0.14rem] md:[word-spacing:-0.12rem] lg:[word-spacing:-0.12rem]"
           />
         </div>
       </div>

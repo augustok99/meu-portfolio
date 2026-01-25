@@ -153,8 +153,8 @@ const TechCarousel = () => {
     const Icon = tech.icon;
 
     return (
-      <div className="flex flex-col items-center gap-2 text-[#F2F2F2]/80 hover:text-[#F2F2F2] transition">
-        <Icon className="text-5xl" />
+      <div className="flex flex-col items-center gap-2 text-appTextLight/80 hover:text-appTextLight transition">
+        <Icon className="text-5xl text-appTextLight dark:text-appTextDark" />
         <span className="text-sm font-medium tracking-wide">{tech.name}</span>
       </div>
     );

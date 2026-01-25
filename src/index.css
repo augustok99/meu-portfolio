@@ -11,7 +11,29 @@
 }
 
 :root {
+  color-scheme: light;
+}
+
+html.dark {
   color-scheme: dark;
+}
+
+/* Ensure the page background follows the theme (used when root/app wrapper
+   might not cover the full viewport or when body is visible behind elements) */
+body {
+  background-color: #f2f2f2;
+}
+
+html.dark body {
+  background-color: #0e0930;
+}
+
+/* App background helper: ensures background toggles reliably regardless of Tailwind purge/jit issues */
+.app-bg {
+  background-color: #f2f2f2;
+}
+html.dark .app-bg {
+  background-color: #0e0930;
 }
 html,
 body,
@@ -19,4 +41,9 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
+}
+
+/* quando html receber .dark */
+html.dark body {
+  color: var(--color-white); /* ou #F2F2F2 */
 }

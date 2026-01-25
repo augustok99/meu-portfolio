@@ -1,5 +1,6 @@
 import { motion, useAnimation } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import useInViewAnimation from "../../hooks/useInViewAnimation";
 import {
   SiPython,
   SiGithub,
@@ -19,7 +20,7 @@ const Icons = ({ icons }: { icons: { icon: IconType; name: string }[] }) => {
         return (
           <IconComp
             key={t.name}
-            className="text-white w-7 h-7"
+            className="w-7 h-7 text-appTextLight dark:text-appTextDark"
             title={t.name}
           />
         );
@@ -37,164 +38,39 @@ function ProjectCard({
   description?: string;
   icon?: React.ReactNode;
 }) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const controls = useAnimation();
+  const { ref, inView } = useInViewAnimation({
+    once: false,
+    duration: 0.8,
+    ease: "easeInOut",
+    leaveGrace: 3000,
+  });
+
   const imgControls = useAnimation();
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    // We'll allow the entrance animation to finish even if the user scrolls away.
-    // On leave we schedule a hide after a grace period (3s). If the user returns
-    // before that, we cancel the hide. This avoids flicker and ensures a single
-    // consistent animation lifecycle.
-    let leaveTimeout: number | null = null;
-    const visibleRef = { current: false } as { current: boolean };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.intersectionRatio > 0) {
-            // still visible: cancel any pending hide and ensure enter animation
-            if (leaveTimeout) {
-              clearTimeout(leaveTimeout);
-              leaveTimeout = null;
-            }
-            visibleRef.current = true;
-            controls.start({
-              opacity: 1,
-              y: 0,
-              transition: { duration: 0.8, ease: "easeInOut" },
-            });
-            // start subtle bobbing animation on the image
-            // gentler bobbing to reduce rendering cost on low-end devices
-            imgControls.start({
-              y: [0, -6, 0],
-              transition: {
-                duration: 3.6,
-                repeat: Infinity,
-                ease: "easeInOut",
-              },
-            });
-            // ensure we resume if page becomes visible again
-            // visibleRef marks whether we are considered visible
-            visibleRef.current = true;
-          } else {
-            // schedule hide with a longer grace to allow the entrance animation
-            // to finish even if the element briefly leaves the viewport
-            if (leaveTimeout) clearTimeout(leaveTimeout);
-            leaveTimeout = window.setTimeout(() => {
-              leaveTimeout = null;
-              visibleRef.current = false;
-              controls.start({
-                opacity: 0,
-                y: 40,
-                transition: { duration: 0.35, ease: "easeInOut" },
-              });
-              imgControls.start({
-                y: 0,
-                scale: 1.16,
-                transition: { duration: 0.2 },
-              });
-            }, 3000);
-          }
-        });
-      },
-      { threshold: [0], rootMargin: "0px 0px -10px 0px" },
-    );
-
-    // Handle page visibility to avoid animation jank when tab is frozen
-    const onVisibility = () => {
-      if (document.visibilityState === "hidden") {
-        // stop running animations
-        try {
-          controls.stop();
-        } catch (e) {
-          console.error(e);
-        }
-        try {
-          imgControls.stop();
-        } catch (e) {
-          console.error(e);
-        }
-      } else {
-        // When tab becomes visible, check if the element is actually in viewport
-        // (IntersectionObserver entries may have been missed while hidden).
-        try {
-          const rect = el.getBoundingClientRect();
-          const inView = rect.top < window.innerHeight && rect.bottom > 0;
-          if (inView) {
-            visibleRef.current = true;
-            controls.start({
-              opacity: 1,
-              y: 0,
-              transition: { duration: 0.8, ease: "easeInOut" },
-            });
-            imgControls.start({
-              y: [0, -6, 0],
-              transition: {
-                duration: 3.6,
-                repeat: Infinity,
-                ease: "easeInOut",
-              },
-            });
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    };
-
-    const onPageShow = () => {
+    if (inView) {
+      imgControls.start({
+        y: [0, -6, 0],
+        transition: { duration: 3.6, repeat: Infinity, ease: "easeInOut" },
+      });
+    } else {
+      imgControls.start({ y: 0, scale: 1.16, transition: { duration: 0.2 } });
       try {
-        const rect = el.getBoundingClientRect();
-        const inView = rect.top < window.innerHeight && rect.bottom > 0;
-        if (inView) {
-          visibleRef.current = true;
-          controls.start({
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.8, ease: "easeInOut" },
-          });
-          imgControls.start({
-            y: [0, -6, 0],
-            transition: {
-              duration: 3.6,
-              repeat: Infinity,
-              ease: "easeInOut",
-            },
-          });
-        }
-      } catch (e) {
-        console.error(e);
+        imgControls.stop();
+      } catch {
+        /* ignore */
       }
-    };
-    document.addEventListener("visibilitychange", onVisibility);
-    window.addEventListener("pageshow", onPageShow as EventListener);
-
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-      if (leaveTimeout) clearTimeout(leaveTimeout);
-      document.removeEventListener("visibilitychange", onVisibility);
-      window.removeEventListener("pageshow", onPageShow as EventListener);
-    };
-  }, [controls, imgControls]);
+    }
+  }, [inView, imgControls]);
 
   return (
     <motion.div
-      ref={ref}
+      ref={ref as React.RefObject<HTMLDivElement>}
       whileTap={{ scale: 0.95 }}
       style={{ cursor: "pointer" }}
       className="grid rounded-2xl text-left"
     >
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={controls}
-        className="flex flex-col items-center bg-gradient-to-r from-[#189c70] via-[#219b72] to-[#1f855c] gap-4 rounded-2xl w-[18rem] h-[27rem] md:w-[25rem] shadow-lg shadow-[#08051a] md:h-[29rem] p-4"
-      >
+      <motion.div className="flex flex-col items-center bg-[#00BC7D] gap-4 rounded-2xl w-[18rem] h-[27rem] md:w-[25rem] shadow-lg shadow-black/60 md:h-[29rem] p-4">
         <div className="mx-auto mt-4 flex rounded-2xl w-[16rem] h-[15rem]  md:w-[21rem] md:h-[14rem] select-none overflow-hidden">
           {imgSrc ? (
             <motion.img
@@ -239,7 +115,7 @@ function ProjectCard({
 export function CardProject() {
   return (
     <div className="justify-center grid gap-12 mt-12">
-      <h1 className="text-white text-4xl flex justify-center items-center font-semibold font-poppins mt-12">
+      <h1 className="text-4xl text-current flex justify-center items-center font-semibold font-poppins mt-12">
         Meus Projetos
       </h1>
       {/* Cards */}
