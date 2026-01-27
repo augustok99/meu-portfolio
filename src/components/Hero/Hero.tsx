@@ -13,9 +13,8 @@ const Hero = () => {
         className="flex flex-col font-semibold text-center gap-2 items-center md:pl-10 px-10"
       >
         <h1
-          // quebrar linha com hyphens
           style={{ hyphens: "auto", WebkitHyphens: "auto", msHyphens: "auto" }}
-          className="md:text-6xl text-4xl italic font-playfair leading-tight pt-16 md:text-center"
+          className="md:text-6xl text-4xl italic font-playfair leading-tight pt-16 text-center md:text-center font-[640]"
         >
           <span className="block dark:text-appTextDark">
             Transformo <span className="text-emerald-500">ideias </span>

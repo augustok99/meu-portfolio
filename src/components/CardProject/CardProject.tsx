@@ -46,6 +46,7 @@ function ProjectCard({
   });
 
   const imgControls = useAnimation();
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (inView) {
@@ -67,7 +68,11 @@ function ProjectCard({
     <motion.div
       ref={ref as React.RefObject<HTMLDivElement>}
       whileTap={{ scale: 0.95 }}
-      style={{ cursor: "pointer" }}
+      style={{
+        cursor: "pointer",
+        willChange: "transform",
+        backfaceVisibility: "hidden",
+      }}
       className="grid rounded-2xl text-left"
     >
       <motion.div className="flex flex-col items-center bg-[#00BC7D] gap-4 rounded-2xl w-[18rem] h-[27rem] md:w-[25rem] shadow-lg shadow-black/60 md:h-[29rem] p-4">
@@ -84,7 +89,11 @@ function ProjectCard({
               initial={{ y: 0, scale: 1.16 }}
               whileHover={{ scale: 1.28 }}
               animate={imgControls}
-              style={{ transformOrigin: "center", willChange: "transform" }}
+              style={{
+                transformOrigin: "center",
+                willChange: "transform",
+                backfaceVisibility: "hidden",
+              }}
             />
           ) : (
             <div className="w-full h-full rounded-2xl bg-white/5 flex items-center justify-center text-xs text-white/60">

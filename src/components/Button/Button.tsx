@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Zap, PhoneCall } from "lucide-react";
 import { useThemeContext } from "../../context/useThemeContext";
 
@@ -9,7 +9,7 @@ const Button = () => {
     theme === "dark" ? "bg-white text-black" : "bg-black text-white";
 
   return (
-    <div className="flex justify-center mt-18 md:mt-12">
+    <div className="flex justify-center mt-18 md:mt-[2rem]">
       <div className="grid md:grid-cols-2 grid-cols-1 md:gap-1 gap-3">
         <motion.button
           whileHover={{ scale: 1.05 }}

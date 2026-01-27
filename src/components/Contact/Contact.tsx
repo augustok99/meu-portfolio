@@ -1,6 +1,6 @@
 import { SiGithub, SiWhatsapp, SiLinkedin, SiInstagram } from "react-icons/si";
 import { HiOutlinePaperAirplane } from "react-icons/hi";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { useThemeContext } from "../../context/useThemeContext";
 
@@ -11,9 +11,9 @@ const Contact = () => {
       <h1 className="text-current text-4xl flex justify-center items-center font-semibold font-poppins">
         Contato
       </h1>
-      <div className=" grid gap-14 mt-4">
-        <div className="flex justify-end mx-65 rounded-xl mt-5 h-[38rem] py-9 pr-9 bg-linear-to-r from-[#189c70] via-[#219b72] to-[#1f855c] mb-11">
-          <div className="grid grid-cols-1 pl-12 text-start items-center mx-auto">
+      <div className=" grid">
+        <div className="flex flex-col md:flex-row items-center md:justify-end md:mx-65 rounded-xl md:h-auto md:h-[38rem] py-9 pr-0 md:pr-9 bg-transparent md:bg-linear-to-r md:from-[#189c70] md:via-[#219b72] md:to-[#1f855c] mb-11">
+          <div className="hidden md:grid grid-cols-1 pl-12 text-start items-center mx-auto">
             <div className="pb-14 flex justify-between h-full">
               <div className="items-start flex flex-col gap-10">
                 <h1 className="font-poppins font-bold text-3xl w-[35rem]">
@@ -27,13 +27,11 @@ const Contact = () => {
                 </h1>
                 <motion.button
                   type="button"
-                  whileTap={{
-                    scale: 0.98,
-                    transition: {
-                      type: "spring",
-                      stiffness: 1500,
-                      damping: 30,
-                    },
+                  whileTap={{ scale: 0.98, transition: tapTransition }}
+                  style={{
+                    cursor: "pointer",
+                    willChange: "transform",
+                    backfaceVisibility: "hidden",
                   }}
                   style={{ cursor: "pointer" }}
                   className="gap-9 flex flex-col items-start border-2 border-white w-[19rem] px-5 py-2 rounded-lg hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
@@ -48,13 +46,11 @@ const Contact = () => {
                 </motion.button>
                 <motion.button
                   type="button"
-                  whileTap={{
-                    scale: 0.98,
-                    transition: {
-                      type: "spring",
-                      stiffness: 1500,
-                      damping: 30,
-                    },
+                  whileTap={{ scale: 0.98, transition: tapTransition }}
+                  style={{
+                    cursor: "pointer",
+                    willChange: "transform",
+                    backfaceVisibility: "hidden",
                   }}
                   style={{ cursor: "pointer" }}
                   className="gap-9 flex flex-col items-start border-2 border-white w-[19rem] px-5 py-2 rounded-lg hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
@@ -69,13 +65,11 @@ const Contact = () => {
                 </motion.button>
                 <motion.button
                   type="button"
-                  whileTap={{
-                    scale: 0.98,
-                    transition: {
-                      type: "spring",
-                      stiffness: 1500,
-                      damping: 30,
-                    },
+                  whileTap={{ scale: 0.98, transition: tapTransition }}
+                  style={{
+                    cursor: "pointer",
+                    willChange: "transform",
+                    backfaceVisibility: "hidden",
                   }}
                   style={{ cursor: "pointer" }}
                   className="gap-9 flex flex-col items-start border-2 border-white w-[19rem] px-5 py-2 rounded-lg hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
@@ -90,13 +84,11 @@ const Contact = () => {
                 </motion.button>
                 <motion.button
                   type="button"
-                  whileTap={{
-                    scale: 0.98,
-                    transition: {
-                      type: "spring",
-                      stiffness: 1500,
-                      damping: 30,
-                    },
+                  whileTap={{ scale: 0.98, transition: tapTransition }}
+                  style={{
+                    cursor: "pointer",
+                    willChange: "transform",
+                    backfaceVisibility: "hidden",
                   }}
                   style={{ cursor: "pointer" }}
                   className="gap-9 flex flex-col items-start border-2 border-white w-[19rem] px-5 py-2 rounded-lg hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
@@ -125,7 +117,6 @@ const Contact = () => {
               >
                 Entre em contato <span className="text-[#189c70]">comigo</span>
               </h2>
-
               {/* Form */}
               <ContactForm />
             </div>

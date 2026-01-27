@@ -121,6 +121,7 @@ const About = () => {
             ref={ref as React.RefObject<HTMLDivElement>}
             initial={{ opacity: 0, y: 40 }}
             animate={controls}
+            style={{ willChange: "transform", backfaceVisibility: "hidden" }}
             className="rounded-2xl border-white/10 md:w-92 md:h-128 justify-center w-[18rem] h-[27rem]"
           >
             <img
@@ -135,10 +136,13 @@ const About = () => {
             />
           </motion.div>
         </div>
-        <div className="w-[20rem] h-[27rem] md:w-[22rem]" ref={typeRef}>
+        <div
+          className="w-[20rem] px-5 md:px-0 h-[27rem] md:w-[22rem]"
+          ref={typeRef}
+        >
           <Typewriter
             text={
-              "Me chamo Carlos Augusto, atuo como desenvolvedor Full Stack, com foco em JavaScript/TypeScript e construção de aplicações web modernas. Ao longo da minha formação, atuei tanto no backend (autenticação, CRUD, estruturação de banco de dados) quanto no frontend, criando interfaces funcionais e bem estruturadas."
+              "Olá, Seja bem vindo(a)! Meu nome é Carlos Augusto, atuo como desenvolvedor Full Stack, com foco em React/TypeScript e construção de aplicações web modernas. Ao longo da minha formação, atuei tanto no backend (autenticação, CRUD, estruturação de banco de dados) quanto no frontend, criando interfaces funcionais e bem estruturadas."
             }
             speed={14}
             startOnView={showType}

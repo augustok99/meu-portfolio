@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import type { TypewriterProps } from "../types/typewritterProps";
 import { useThemeContext } from "../context/useThemeContext";
 
@@ -56,6 +57,7 @@ const Typewriter: React.FC<TypewriterProps> = ({
     insertPositions.push(cumulative);
   }
   const cleanText = segments.join("");
+  const reduceMotion = useReducedMotion();
 
   // Centralized start/stop helpers to prevent overlapping intervals/timeouts.
   const clearAnim = (reset = false) => {
@@ -88,6 +90,18 @@ const Typewriter: React.FC<TypewriterProps> = ({
   // startAnim moved into the useEffect below to avoid changing identity across renders
 
   useEffect(() => {
+    if (reduceMotion) {
+      // Respect reduced motion: show full text immediately and mark complete,
+      // but schedule state updates asynchronously to avoid cascading renders.
+      const timeoutId = window.setTimeout(() => {
+        setIndex(cleanText.length);
+        setTypingComplete(true);
+        setCursorVisible(true);
+      }, 0);
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
     // Start/stop animation according to `canStart` and text changes.
     let startTimeoutId: number | null = null;
 
