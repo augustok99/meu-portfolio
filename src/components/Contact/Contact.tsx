@@ -23,12 +23,13 @@ const Contact = () => {
       a.click();
       a.remove();
     } catch (e) {
+      console.error(e);
       // fallback
       window.open(url, "_blank");
     }
   };
   return (
-    <div className="flex flex-col gap-8 mt-[18rem]">
+    <div id="contact" className="flex pt-5 flex-col gap-6 mt-[15rem]">
       <h1 className="text-current text-4xl flex justify-center items-center font-semibold font-poppins">
         Contato
       </h1>

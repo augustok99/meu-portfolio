@@ -5,7 +5,7 @@ const About = () => {
   const { ref, visible } = useInViewFade<HTMLDivElement>();
 
   return (
-    <div className="justify-center grid gap-14 mt-[15rem]">
+    <div className="justify-center grid gap-14 mt-[12rem]">
       <h1 className="text-current text-4xl flex justify-center items-center font-semibold font-poppins mt-12 ">
         Sobre mim
       </h1>

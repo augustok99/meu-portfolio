@@ -15,6 +15,12 @@ const Button = () => {
           style={{ cursor: "pointer" }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          onClick={() => {
+            const el = document.getElementById("contact");
+            if (el) {
+              el.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+          }}
           className={`px-8 py-4 rounded-3xl w-fit font-black uppercase tracking-tighter text-xl flex gap-2 items-center ${contactThemeClasses}`}
         >
           <PhoneCall className="w-8 h-8 text-current" />
@@ -25,6 +31,12 @@ const Button = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           style={{ cursor: "pointer" }}
+          onClick={() => {
+            const el = document.getElementById("projects");
+            if (el) {
+              el.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+          }}
           className="flex items-center px-10 mx-auto py-4 bg-emerald-500 dark:bg-emerald-400 text-black dark:text-white text-xl uppercase tracking-tighter rounded-3xl font-black gap-1"
         >
           <Zap className="w-8 h-8 text-current" />

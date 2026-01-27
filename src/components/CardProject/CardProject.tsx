@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { motion, useAnimation, useReducedMotion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import useInViewAnimation from "../../hooks/useInViewAnimation";
 import {
   SiPython,
@@ -46,7 +46,6 @@ function ProjectCard({
   });
 
   const imgControls = useAnimation();
-  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (inView) {
@@ -123,7 +122,7 @@ function ProjectCard({
 
 export function CardProject() {
   return (
-    <div className="justify-center grid gap-12 mt-12">
+    <div id="projects" className="justify-center grid gap-12 mt-12">
       <h1 className="text-4xl text-current flex justify-center items-center font-semibold font-poppins mt-12">
         Meus Projetos
       </h1>
