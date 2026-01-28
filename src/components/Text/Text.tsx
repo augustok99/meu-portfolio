@@ -2,7 +2,7 @@ import Typewriter from "../../utils/Typewritter";
 
 const Text = () => {
   return (
-    <div className="md:pl-28 px-auto flex mx-auto w-78 md:h-28 justify-center md:justify-start md:mx-0 md:w-full">
+    <div className="md:pl-12 md:px-32 xl:pl-28 px-auto flex mx-auto w-78 md:h-28 justify-center md:justify-start md:mx-0 md:w-full">
       <Typewriter
         text={`Desenvolvo interfaces modernas, acessíveis <md/>e focadas na experiência do usuário, estas são algumas das tecnologias que já utilizei em meus projetos.`}
         speed={14}

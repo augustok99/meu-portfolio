@@ -12,10 +12,13 @@
 
 :root {
   color-scheme: light;
+  /* CSS variable used by SVG fills so waves match page background in both themes */
+  --page-bg: #f2f2f2;
 }
 
 html.dark {
   color-scheme: dark;
+  --page-bg: #0e0930;
 }
 
 /* Ensure the page background follows the theme (used when root/app wrapper

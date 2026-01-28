@@ -29,13 +29,13 @@ const Contact = () => {
     }
   };
   return (
-    <div id="contact" className="flex pt-5 flex-col lg:gap-6 lg:mt-[15rem]">
+    <div id="contact" className="flex pt-5 md:pt-0 flex-col md:gap-14 mt-8">
       <h1 className="text-current text-4xl flex justify-center items-center font-semibold font-poppins">
         Contato
       </h1>
       <div className=" grid">
-        <div className="flex flex-col mx-auto justify-center md:flex-row items-center md:justify-end md:mx-65 rounded-xl md:h-auto pt-12 md:pt-8 md:py-6 md:pr-9 bg-transparent md:bg-linear-to-r md:from-[#189c70] md:via-[#219b72] md:to-[#1f855c] mb-11">
-          <div className="hidden md:grid grid-cols-1 pl-12 text-start items-center mx-auto">
+        <div className="flex flex-col mx-auto justify-center md:flex-row items-center md:justify-end md:mx-65 xl:mx-auto rounded-xl md:h-auto pt-12 md:pt-8 md:py-6 md:pr-9 xl:px-2 xl:pr-9 xl:py-9 bg-transparent md:bg-linear-to-r md:from-[#00BC7D] md:via-[#219b72] md:to-[#1f855c] mb-11">
+          <div className="hidden xl:grid grid-cols-1 pl-12 xl:mx-0 text-start items-center mx-auto">
             <div className="pb-14 flex justify-between h-full">
               <div className="items-start flex flex-col gap-10">
                 <h1 className="font-poppins font-bold text-3xl w-[35rem]">
@@ -66,7 +66,7 @@ const Contact = () => {
                   <div className="flex gap-3 items-center justify-center">
                     <SiWhatsapp className="size-5 text-white" />
                     <p className="text-[#f2f2f2] font-semibold font-poppins text-lg">
-                      (67) 9113-8636
+                      (67) 99113-8636
                     </p>
                   </div>
                 </motion.button>
@@ -137,7 +137,7 @@ const Contact = () => {
             </div>
           </div>
           <div
-            className={`h-full lg:w-1/2 w-[21rem] rounded-2xl md:py-6 ${
+            className={`h-full xl:h-[35rem] lg:w-1/2 xl:w-[32rem] w-[21rem] rounded-2xl md:py-4 xl:py-6 ${
               theme === "dark"
                 ? "bg-[#0e0930] via-[#0a001e] to-[#343485]"
                 : "bg-[#f2f2f2]"
@@ -220,11 +220,11 @@ function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-3">
       <label className="font-poppins text-sm text- current">
         Estou interessado em...
       </label>
-      <div className="flex flex-wrap gap-3 mt-2">
+      <div className="flex flex-wrap gap-3">
         {interests.map((i) => {
           const active = interest.includes(i);
           return (
@@ -281,7 +281,7 @@ function ContactForm() {
         className="hidden"
       />
 
-      <div className="flex flex-col gap-3 items-center md:justify-between justify-center">
+      <div className="flex flex-col gap-2 items-center md:justify-between justify-center">
         <div>
           <button
             type="submit"
@@ -293,7 +293,7 @@ function ContactForm() {
             }}
             disabled={loading}
             aria-disabled={loading}
-            className="flex items-center gap-3 bg-gradient-to-r from-[#219b72] to-[#1f855c] text-white px-5 py-3 rounded-xl shadow-lg hover:shadow-xl transform transition-all duration-150 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed font-poppins"
+            className="flex items-center gap-3 bg-gradient-to-r from-[#219b72] to-[#1f855c] text-white px-5 xl:py-3 rounded-xl shadow-lg hover:shadow-xl transform transition-all duration-150 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed font-poppins"
           >
             <HiOutlinePaperAirplane />
             <span>
@@ -306,13 +306,23 @@ function ContactForm() {
           </button>
         </div>
 
-        <div className="text-md">
-          {status === "ok" && (
-            <span className="text-green-600">Mensagem enviada!</span>
-          )}
-          {status === "error" && (
-            <span className="text-red-500">Erro — verifique os campos.</span>
-          )}
+        <div className="text-sm min-h-[1.25rem]">
+          <span
+            aria-live="polite"
+            className={
+              status === "ok"
+                ? "text-green-600"
+                : status === "error"
+                  ? "text-red-500"
+                  : "invisible"
+            }
+          >
+            {status === "ok"
+              ? "Mensagem enviada!"
+              : status === "error"
+                ? "Erro — verifique os campos."
+                : null}
+          </span>
         </div>
       </div>
     </form>

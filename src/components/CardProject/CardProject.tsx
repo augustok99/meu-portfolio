@@ -122,12 +122,12 @@ function ProjectCard({
 
 export function CardProject() {
   return (
-    <div id="projects" className="justify-center grid gap-12 mt-12">
-      <h1 className="text-4xl text-current flex justify-center items-center font-semibold font-poppins mt-12">
+    <div id="projects" className="justify-center grid gap-12 xl:pt-34 xl:pb-60">
+      <h1 className="text-4xl text-current flex justify-center items-center font-semibold font-poppins">
         Meus Projetos
       </h1>
       {/* Cards */}
-      <div className="grid md:grid-cols-3 grid-cols-1 justify-center gap-22">
+      <div className="grid md:grid-cols-2 xl:grid-cols-3 grid-cols-1 justify-center gap-22 xl:px-0 md:gap-16 md:px-12 md:pr-16 xl:pr-0 xl:gap-22">
         <ProjectCard
           imgSrc="../../../imgs/img_bot_discord_deals.jpg"
           description={
@@ -158,21 +158,23 @@ export function CardProject() {
             />
           }
         />
-        <ProjectCard
-          imgSrc="../../../imgs/scraping_gpu.png"
-          description={
-            "Web Scraping - Raspagem de dados de preços de placas de video de um site e-commerce, feito com uso das bibliotecas Selenium, OS, pandas, re, math"
-          }
-          icon={
-            <Icons
-              icons={[
-                { icon: SiPython, name: "Python" },
-                { icon: SiGithub, name: "GitHub" },
-                { icon: RiFileExcel2Line, name: "Excel" },
-              ]}
-            />
-          }
-        />
+        <div className="md:col-span-2 md:flex md:justify-center xl:col-span-1">
+          <ProjectCard
+            imgSrc="../../../imgs/scraping_gpu.png"
+            description={
+              "Web Scraping - Raspagem de dados de preços de placas de video de um site e-commerce, feito com uso das bibliotecas Selenium, OS, pandas, re, math"
+            }
+            icon={
+              <Icons
+                icons={[
+                  { icon: SiPython, name: "Python" },
+                  { icon: SiGithub, name: "GitHub" },
+                  { icon: RiFileExcel2Line, name: "Excel" },
+                ]}
+              />
+            }
+          />
+        </div>
       </div>
     </div>
   );
