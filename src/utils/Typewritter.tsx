@@ -183,7 +183,7 @@ const Typewriter: React.FC<TypewriterProps> = ({
         insertPositions.forEach((pos, i) => {
           if (pos <= displayed.length) {
             parts.push(displayed.slice(last, pos));
-            parts.push(<span key={i} className="hidden md:block" />);
+            parts.push(<br key={i} className="hidden md:block" />);
             last = pos;
           }
         });

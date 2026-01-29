@@ -1,35 +1,15 @@
-import { SiGithub, SiWhatsapp, SiLinkedin, SiInstagram } from "react-icons/si";
 import { HiOutlinePaperAirplane } from "react-icons/hi";
-import { motion, useReducedMotion } from "framer-motion";
-import type { Transition } from "framer-motion";
 import { useState } from "react";
 import { useThemeContext } from "../../context/useThemeContext";
 
 const Contact = () => {
   const { theme } = useThemeContext();
-  const shouldReduceMotion = useReducedMotion();
-  const tapTransition: Transition = shouldReduceMotion
-    ? { duration: 0 }
-    : { type: "spring", stiffness: 300, damping: 20 };
-  // helper to open external links safely in a new tab
-  const openExternal = (url: string) => {
-    try {
-      const a = document.createElement("a");
-      a.href = url;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      // append to body to ensure click works in some browsers
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    } catch (e) {
-      console.error(e);
-      // fallback
-      window.open(url, "_blank");
-    }
-  };
+
   return (
-    <div id="contact" className="flex pt-5 md:pt-0 flex-col md:gap-14 mt-8">
+    <div
+      id="contact"
+      className="flex pt-5 md:pt-[10rem] flex-col md:gap-14 md:mt-0 mt-8"
+    >
       <h1 className="text-current text-4xl flex justify-center items-center font-semibold font-poppins">
         Contato
       </h1>
@@ -47,92 +27,13 @@ const Contact = () => {
                   </span>
                   juntos!
                 </h1>
-                <motion.button
-                  type="button"
-                  onClick={() =>
-                    openExternal(
-                      "https://api.whatsapp.com/send?phone=5567991138636",
-                    )
-                  }
-                  whileTap={{ scale: 0.98, transition: tapTransition }}
-                  style={{
-                    cursor: "pointer",
-                    willChange: "transform",
-                    backfaceVisibility: "hidden",
-                  }}
-                  className="gap-9 flex flex-col items-start border-2 border-white w-[16rem] px-5 py-2 rounded-2xl hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
-                  aria-label="whatsapp"
-                >
-                  <div className="flex gap-3 items-center justify-center">
-                    <SiWhatsapp className="size-5 text-white" />
-                    <p className="text-[#f2f2f2] font-semibold font-poppins text-lg">
-                      (67) 99113-8636
-                    </p>
-                  </div>
-                </motion.button>
-                <motion.button
-                  type="button"
-                  onClick={() =>
-                    openExternal("https://instagram.com/codes.augusto")
-                  }
-                  whileTap={{ scale: 0.98, transition: tapTransition }}
-                  style={{
-                    cursor: "pointer",
-                    willChange: "transform",
-                    backfaceVisibility: "hidden",
-                  }}
-                  className="gap-9 flex flex-col items-start border-2 border-white w-[16rem] px-5 py-2 rounded-2xl hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
-                  aria-label="instagram"
-                >
-                  <div className="flex gap-3 items-center justify-center">
-                    <SiInstagram className="size-5 text-white" />
-                    <p className="text-[#f2f2f2] font-semibold font-poppins text-lg">
-                      @codes.augusto
-                    </p>
-                  </div>
-                </motion.button>
-                <motion.button
-                  type="button"
-                  onClick={() =>
-                    openExternal("https://www.linkedin.com/in/codesaugusto")
-                  }
-                  whileTap={{ scale: 0.98, transition: tapTransition }}
-                  style={{
-                    cursor: "pointer",
-                    willChange: "transform",
-                    backfaceVisibility: "hidden",
-                  }}
-                  className="gap-9 flex flex-col items-start border-2 border-white w-[16rem] px-5 py-2 rounded-2xl hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
-                  aria-label="linkedin"
-                >
-                  <div className="flex gap-3 items-center justify-center">
-                    <SiLinkedin className="size-5 text-white" />
-                    <p className="text-[#f2f2f2] font-semibold font-poppins text-lg">
-                      codesaugusto
-                    </p>
-                  </div>
-                </motion.button>
-                <motion.button
-                  type="button"
-                  onClick={() =>
-                    openExternal("https://github.com/codesaugusto")
-                  }
-                  whileTap={{ scale: 0.98, transition: tapTransition }}
-                  style={{
-                    cursor: "pointer",
-                    willChange: "transform",
-                    backfaceVisibility: "hidden",
-                  }}
-                  className="gap-9 flex flex-col items-start border-2 border-white w-[16rem] px-5 py-2 rounded-2xl hover:bg-[#1d8864] transform-gpu transition-colors duration-200 focus:outline-none"
-                  aria-label="github"
-                >
-                  <div className="flex gap-3 items-center justify-center">
-                    <SiGithub className="size-5 text-white" />
-                    <p className="text-[#f2f2f2] font-semibold font-poppins text-lg">
-                      codesaugusto
-                    </p>
-                  </div>
-                </motion.button>
+                <img
+                  src="/imgs/social-interaction-amico.svg"
+                  alt="People illustrations by Storyset"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-[28rem] max-w-full h-auto"
+                />
               </div>
             </div>
           </div>
@@ -221,10 +122,10 @@ function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
-      <label className="font-poppins text-sm text- current">
+      <label className="font-poppins text-sm text-current">
         Estou interessado em...
       </label>
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 pt-2">
         {interests.map((i) => {
           const active = interest.includes(i);
           return (

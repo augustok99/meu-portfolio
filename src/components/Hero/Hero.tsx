@@ -4,7 +4,7 @@ import { CodeXml } from "lucide-react";
 
 const Hero = () => {
   return (
-    <div className="mt-12 w-full justify-center mx-auto flex">
+    <div id="home" className="mt-12 w-full justify-center mx-auto flex">
       {/* COLUNA DIREITA */}
       <div>
         <motion.div
@@ -19,7 +19,7 @@ const Hero = () => {
               WebkitHyphens: "auto",
               msHyphens: "auto",
             }}
-            className="md:text-6xl text-3xl italic font-playfair leading-tight pt-16 text-center md:text-center font-[640]"
+            className="md:text-6xl text-3xl italic font-playfair leading-tight pt-16 text-center md:text-center font-[550]"
           >
             <span className="block dark:text-appTextDark">
               Transformo <span className="text-emerald-500">ideias </span>

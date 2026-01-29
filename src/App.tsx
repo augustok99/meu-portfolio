@@ -15,19 +15,15 @@ function App() {
   return (
     <InViewProvider>
       <ThemeProvider>
-        <div className="min-h-screen">
-          <Header />
-          <Hero />
-          <Button />
-          <Text />
-          <TechCarousel />
-          <CardProject />
-          <div className="relative overflow-hidden bg-linear-to-r md:from-[#00BC7D]  md:to-[#1f855c] xl:pb-60 md:mb-38 xl:pt-35 mt-[10rem]">
-            <About />
-          </div>
-          <Contact />
-          <Footer />
-        </div>
+        <Header />
+        <Hero />
+        <Button />
+        <Text />
+        <TechCarousel />
+        <CardProject />
+        <About />
+        <Contact />
+        <Footer />
       </ThemeProvider>
     </InViewProvider>
   );
