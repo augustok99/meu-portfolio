@@ -75,7 +75,7 @@ const TechCarousel = () => {
       marquee.style.visibility = "hidden";
 
       // animação por rAF
-      const speed = 120; // px / s
+      const speed = 80; // px / s
       let last = performance.now();
       let offset = 0;
       let rafId = 0;
@@ -99,8 +99,6 @@ const TechCarousel = () => {
         last = performance.now();
       };
 
-      marquee.addEventListener("mouseenter", onEnter);
-      marquee.addEventListener("mouseleave", onLeave);
       marquee.addEventListener("touchstart", onEnter, {
         passive: true,
       } as EventListenerOptions);
@@ -118,8 +116,6 @@ const TechCarousel = () => {
       return () => {
         cancelAnimationFrame(rafId);
         marquee.style.transform = "";
-        marquee.removeEventListener("mouseenter", onEnter);
-        marquee.removeEventListener("mouseleave", onLeave);
         marquee.removeEventListener(
           "touchstart",
           onEnter as EventListenerOrEventListenerObject,
@@ -153,7 +149,7 @@ const TechCarousel = () => {
     const Icon = tech.icon;
 
     return (
-      <div className="flex flex-col items-center gap-2 text-appTextLight/80 hover:text-appTextLight transition">
+      <div className="flex flex-col items-center gap-2 text-appTextLight/80 hover:text-appTextLight transition select-none">
         <Icon className="text-5xl text-appTextLight dark:text-appTextDark" />
         <span className="text-sm font-medium tracking-wide">{tech.name}</span>
       </div>

@@ -8,7 +8,7 @@ const Text = () => {
         speed={14}
         startOnView={true}
         style={{
-          hyphens: "auto",
+          hyphens: "none",
           WebkitHyphens: "none",
           msHyphens: "none",
         }}

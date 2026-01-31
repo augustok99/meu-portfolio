@@ -15,11 +15,11 @@ const Hero = () => {
         >
           <h1
             style={{
-              hyphens: "auto",
+              hyphens: "none",
               WebkitHyphens: "auto",
               msHyphens: "auto",
             }}
-            className="md:text-6xl text-3xl italic font-playfair leading-tight pt-16 text-center md:text-center font-[550]"
+            className="md:text-6xl text-3xl italic font-playfair leading-tight md:pt-16 pt-22 text-center md:text-center font-[510]"
           >
             <span className="block dark:text-appTextDark">
               Transformo <span className="text-emerald-500">ideias </span>
@@ -30,7 +30,7 @@ const Hero = () => {
               completas
             </span>
           </h1>
-          <CodeXml className="md:w-17 md:h-20 w-12 h-12 text-emerald-500" />
+          <CodeXml className="md:w-20 md:h-20 w-16 h-16 pt-2 text-emerald-500" />
         </motion.div>
       </div>
     </div>

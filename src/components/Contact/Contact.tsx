@@ -14,7 +14,7 @@ const Contact = () => {
         Contato
       </h1>
       <div className=" grid">
-        <div className="flex flex-col mx-auto justify-center md:flex-row items-center md:justify-end md:mx-65 xl:mx-auto rounded-xl md:h-auto pt-12 md:pt-8 md:py-6 md:pr-9 xl:px-2 xl:pr-9 xl:py-9 bg-transparent md:bg-linear-to-r md:from-[#00BC7D] md:via-[#219b72] md:to-[#1f855c] mb-11">
+        <div className="flex flex-col mx-auto justify-center md:flex-row items-center md:justify-end md:mx-65 xl:mx-auto rounded-xl md:h-auto pt-12 md:pt-8 md:py-6 md:pr-9 xl:px-2 xl:pr-9 xl:py-9 bg-transparent xl:bg-linear-to-r xl:from-[#00BC7D] xl:via-[#219b72] xl:to-[#1f855c] mb-11">
           <div className="hidden xl:grid grid-cols-1 pl-12 xl:mx-0 text-start items-center mx-auto">
             <div className="pb-14 flex justify-between h-full">
               <div className="items-start flex flex-col gap-10">
@@ -44,12 +44,17 @@ const Contact = () => {
                 : "bg-[#f2f2f2]"
             } flex items-center justify-center`}
           >
-            <div className="w-[28rem] flex flex-col justify-center px-7 md:px-5">
-              <h2
-                className={` ${theme === "dark" ? "text-[#f2f2f2]" : "text-black"} font-bold text-2xl mb-4`}
-              >
-                Entre em contato <span className="text-[#189c70]">comigo</span>
-              </h2>
+            <div className="w-[28rem] flex flex-col justify-center px-5 md:px-5 pt-2">
+              <div className="flex items-center justify-center md:items-start md:justify-start">
+                <h2
+                  className={` ${theme === "dark" ? "text-[#f2f2f2]" : "text-black"} font-bold text-2xl mb-4`}
+                >
+                  Entre em contato{" "}
+                  <span className="text-[#189c70] md:inline justify-center items-center flex">
+                    comigo
+                  </span>
+                </h2>
+              </div>
               {/* Form */}
               <ContactForm />
             </div>
@@ -121,7 +126,10 @@ function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
+    <form
+      onSubmit={handleSubmit}
+      className="border-2 space-y-3 py-5 px-5 md:py-0 md:px-0 md:border-0 rounded-2xl bg-[#1fe4a2] md:bg-transparent"
+    >
       <label className="font-poppins text-sm text-current">
         Estou interessado em...
       </label>
@@ -194,7 +202,7 @@ function ContactForm() {
             }}
             disabled={loading}
             aria-disabled={loading}
-            className="flex items-center gap-3 bg-gradient-to-r from-[#219b72] to-[#1f855c] text-white px-5 xl:py-3 rounded-xl shadow-lg hover:shadow-xl transform transition-all duration-150 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed font-poppins"
+            className="flex items-center gap-3 bg-gradient-to-r from-[#219b72] to-[#1f855c] text-white px-5 xl:py-3 rounded-xl shadow-lg hover:shadow-xl transform transition-all duration-150 active:scale-95 disabled:opacity-60 py-3 disabled:cursor-not-allowed font-poppins"
           >
             <HiOutlinePaperAirplane />
             <span>

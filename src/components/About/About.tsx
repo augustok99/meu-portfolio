@@ -7,7 +7,10 @@ const About = () => {
   return (
     <div
       id="about"
-      className="relative overflow-hidden bg-linear-to-r md:from-[#00BC7D]  md:to-[#1f855c] xl:pb-60 xl:pt-35 mt-[10rem]"
+      className="relative overflow-hidden xl:pb-60 xl:pt-35 mt-[10rem] bg-cover bg-center bg-no-repeat bg-blend-multiply filter"
+      style={{
+        backgroundImage: `linear-gradient(90deg, rgba(0,188,125,0.95), rgba(31,133,92,0.95)), url('/imgs/texture.png')`,
+      }}
     >
       <div className="justify-center grid gap-14">
         <h1 className="text-current text-4xl flex justify-center items-center font-semibold font-poppins">
@@ -31,7 +34,7 @@ const About = () => {
                 decoding="async"
                 width={288}
                 height={432}
-                className="rounded-2xl shadow-black shadow-md w-full h-full object-cover"
+                className="rounded-2xl shadow-black select-none shadow-md w-full h-full object-cover"
                 alt="Model"
                 style={{
                   willChange: "transform",
