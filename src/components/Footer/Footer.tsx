@@ -33,6 +33,12 @@ export default function Footer() {
           >
             Contato
           </a>
+          <a
+            href="#services"
+            className="font-medium dark:text-white text-gray-500 hover:text-black transition-all"
+          >
+            Serviços
+          </a>
         </div>
         <div className="flex items-center gap-4 mt-8 text-[#209168]">
           <a

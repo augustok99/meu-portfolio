@@ -1,6 +1,8 @@
 import { HiOutlinePaperAirplane } from "react-icons/hi";
 import { useState } from "react";
 import { useThemeContext } from "../../context/useThemeContext";
+import { handleSmoothScroll } from "../../utils/smooth";
+import { isValidEmail } from "../../lib/utils";
 
 const Contact = () => {
   const { theme } = useThemeContext();
@@ -8,6 +10,7 @@ const Contact = () => {
   return (
     <div
       id="contact"
+      onClick={() => handleSmoothScroll({ id: "contact" })}
       className="flex pt-5 md:pt-[9rem] flex-col md:gap-14 md:mt-0 mt-8"
     >
       <h1 className="text-current text-4xl flex justify-center items-center font-semibold font-poppins">
@@ -82,15 +85,11 @@ function ContactForm() {
     setInterest((s) => (s.includes(i) ? s.filter((x) => x !== i) : [...s, i]));
   }
 
-  function validEmail(e: string) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
-  }
-
   async function handleSubmit(ev?: React.FormEvent) {
     ev?.preventDefault();
     if (website) return; // honeypot filled -> likely bot
     if (loading) return; // prevent double submit while sending
-    if (!name.trim() || !validEmail(email) || message.trim().length < 5) {
+    if (!name.trim() || !isValidEmail(email) || message.trim().length < 5) {
       setStatus("error");
       return;
     }

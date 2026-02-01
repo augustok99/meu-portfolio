@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Zap, PhoneCall } from "lucide-react";
 import { useThemeContext } from "../../context/useThemeContext";
+import { handleSmoothScroll } from "../../utils/smooth";
+import { buttonVariants } from "../../utils/animations";
 
 const Button = () => {
   const { theme } = useThemeContext();
@@ -13,14 +15,8 @@ const Button = () => {
       <div className="md:grid-cols-2 md:gap-5 gap-4 flex flex-row">
         <motion.button
           style={{ cursor: "pointer" }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => {
-            const el = document.getElementById("contact");
-            if (el) {
-              el.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-          }}
+          {...buttonVariants}
+          onClick={() => handleSmoothScroll({ id: "contact" })}
           className={`md:px-8 px-4 py-4 md:rounded-3xl rounded-xl md:w-[13rem] w-[7rem] h-12 md:h-full font-bold font-poppins uppercase tracking-tighter md:text-lg text-lg flex justify-center gap-2 items-center ${contactThemeClasses}`}
         >
           <PhoneCall className="w-8 h-8 text-current" />
@@ -28,15 +24,9 @@ const Button = () => {
         </motion.button>
 
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          {...buttonVariants}
           style={{ cursor: "pointer" }}
-          onClick={() => {
-            const el = document.getElementById("projects");
-            if (el) {
-              el.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-          }}
+          onClick={() => handleSmoothScroll({ id: "projects" })}
           className="flex justify-center items-center md:px-10 w-[7rem] md:w-[13rem] font-poppins h-12 md:h-full px-4 rounded-xl mx-auto py-4 bg-emerald-500 dark:bg-emerald-400 text-black md:text-lg text-lg uppercase tracking-tighter md:rounded-3xl font-bold gap-1"
         >
           <Zap className="w-8 h-8 text-current" />

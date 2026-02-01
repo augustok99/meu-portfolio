@@ -4,7 +4,10 @@ import ThemeToggle from "../ThemeToggle/ThemeToggle";
 
 const Header = () => {
   return (
-    <div className="md:pl-28 md:pt-12 md:mt-0 pt-6 pl-4 flex justify-center md:justify-start">
+    <div
+      id="home"
+      className="md:pl-28 md:pt-12 md:mt-0 pt-6 pl-4 flex justify-center md:justify-start"
+    >
       <header className="w-full">
         <div className="flex items-center justify-between">
           <div className="justify-start flex gap-2 items-center">

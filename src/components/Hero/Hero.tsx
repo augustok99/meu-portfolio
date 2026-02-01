@@ -4,7 +4,7 @@ import { CodeXml } from "lucide-react";
 
 const Hero = () => {
   return (
-    <div id="home" className="mt-12 w-full justify-center mx-auto flex">
+    <div className="mt-12 w-full justify-center mx-auto flex">
       {/* COLUNA DIREITA */}
       <div>
         <motion.div
