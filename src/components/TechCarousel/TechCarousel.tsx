@@ -1,9 +1,10 @@
-import { FaReact, FaNodeJs, FaDocker } from "react-icons/fa";
+import { FaReact, FaNodeJs, FaDocker, FaJava } from "react-icons/fa";
 import {
   SiTypescript,
   SiTailwindcss,
   SiPython,
-  SiPostgresql,
+  SiSpringboot,
+  SiMongodb,
 } from "react-icons/si";
 import { GrMysql } from "react-icons/gr";
 import type { IconType } from "react-icons";
@@ -17,13 +18,15 @@ type Tech = {
 const TechCarousel = () => {
   const techs = [
     { icon: FaReact, name: "React" },
+    { icon: FaJava, name: "Java" },
+    { icon: FaNodeJs, name: "Node.js" },
+    { icon: FaDocker, name: "Docker" },
+    { icon: GrMysql, name: "MySQL" },
     { icon: SiTypescript, name: "TypeScript" },
     { icon: SiTailwindcss, name: "Tailwind CSS" },
-    { icon: FaNodeJs, name: "Node.js" },
-    { icon: SiPostgresql, name: "PostgreSQL" },
-    { icon: GrMysql, name: "MySQL" },
-    { icon: FaDocker, name: "Docker" },
     { icon: SiPython, name: "Python" },
+    { icon: SiSpringboot, name: "Spring Boot" },
+    { icon: SiMongodb, name: "MongoDB" },
   ];
   // Quantas vezes repetir a sequência dentro de cada bloco (calculado dinamicamente)
   const [repetitions, setRepetitions] = useState<number>(6);

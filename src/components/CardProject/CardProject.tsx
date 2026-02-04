@@ -5,9 +5,10 @@ import useInViewAnimation from "../../hooks/useInViewAnimation";
 import {
   SiPython,
   SiGithub,
-  SiJavascript,
+  SiNodedotjs,
   SiDiscord,
   SiWhatsapp,
+  SiMongodb,
 } from "react-icons/si";
 import { RiFileExcel2Line } from "react-icons/ri";
 import type { IconType } from "react-icons";
@@ -158,6 +159,7 @@ export function CardProject() {
           description={
             "Discord Deals Offerts - Um disparador de jogos gratuitos e pagos desenvoldido com Python, para canais de servidores Discord."
           }
+          href="https://github.com/codesaugusto/discord_deals_offerts"
           icon={
             <Icons
               icons={[
@@ -171,12 +173,14 @@ export function CardProject() {
         <ProjectCard
           imgSrc="../../../imgs/turcb.png"
           description={
-            "TurCB - Um guia turistico virtual, que dispara informações turisticas relevantes para a cidade de Corumbá-MS desenvolvido com Javascript."
+            "TurCB - Um bot para WhatsApp, que dispara informações turisticas relevantes para a cidade de Corumbá desenvolvido com Node.js e MongoDB."
           }
+          href="https://github.com/codesaugusto/turcb_bot"
           icon={
             <Icons
               icons={[
-                { icon: SiJavascript, name: "JavaScript" },
+                { icon: SiMongodb, name: "MongoDB" },
+                { icon: SiNodedotjs, name: "Node.js" },
                 { icon: SiGithub, name: "GitHub" },
                 { icon: SiWhatsapp, name: "WhatsApp" },
               ]}

@@ -1,5 +1,4 @@
 import React from "react";
-import { handleSmoothScroll } from "../../utils/smooth";
 import { motion } from "framer-motion";
 import useInViewAnimation from "../../hooks/useInViewAnimation";
 import { MdRocketLaunch } from "react-icons/md";
@@ -61,7 +60,6 @@ const Services = () => {
   return (
     <div
       id="services"
-      onClick={() => handleSmoothScroll({ id: "services" })}
       className="justify-center grid gap-12 pt-22 xl:pt-34 xl:pb-30"
     >
       <h1 className="text-4xl text-current flex justify-center items-center font-semibold font-poppins">

@@ -11,17 +11,19 @@ const Header = () => {
     >
       <header className="w-full">
         <div className="flex items-center justify-between">
-          <div className="justify-start flex gap-2 items-center">
-            <Link
-              to="https://www.instagram.com/codes.augusto/"
-              className="md:text-3xl cursor-pointer text-2xl font-semibold font-montserrat italic text-current"
-            >
+          <Link
+            to="https://www.instagram.com/codes.augusto/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="justify-start flex gap-2 items-center"
+          >
+            <div className="md:text-3xl cursor-pointer text-2xl font-semibold font-montserrat italic text-current">
               @codes.augusto
-            </Link>
+            </div>
             <span className="text-4xl">
               <FiInstagram className="md:w-8 md:h-12 w-7 h-8 text-current" />
             </span>
-          </div>
+          </Link>
           <div className="pr-4">
             <ThemeToggle />
           </div>
