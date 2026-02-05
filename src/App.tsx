@@ -12,7 +12,7 @@ import Contact from "./components/Contact/Contact";
 import WhatsAppFloating from "./components/Contact/WhatsAppFloating";
 import Footer from "./components/Footer/Footer";
 import Services from "./components/Services/Services";
-import Stack from "./components/Stack/Stack";
+import StackSection from "./components/Stack/Stack";
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
         <Services />
         <About />
         <CardProject />
-        <Stack />
+        <StackSection />
         <Contact />
         <WhatsAppFloating />
         <Footer />

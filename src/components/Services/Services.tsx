@@ -1,6 +1,5 @@
 import React from "react";
 import { motion } from "framer-motion";
-import useInViewAnimation from "../../hooks/useInViewAnimation";
 import { MdRocketLaunch } from "react-icons/md";
 import { useThemeContext } from "../../context/useThemeContext";
 import { MdComputer } from "react-icons/md";
@@ -13,21 +12,15 @@ interface ServiceCardProps {
 }
 
 function ServiceCard({ icon, title, description }: ServiceCardProps) {
-  const { ref } = useInViewAnimation({
-    threshold: 0.1,
-  });
-
   return (
     <motion.div
-      ref={ref as React.RefObject<HTMLDivElement>}
       whileTap={{ scale: 0.95 }}
       whileHover={{ scale: 1.04 }}
       style={{
         cursor: "pointer",
-        willChange: "transform",
         backfaceVisibility: "hidden",
       }}
-      className="grid rounded-2xl text-left"
+      className="rounded-2xl text-left"
     >
       <motion.div className="flex flex-col items-center bg-[#00BC7D] gap-4 rounded-2xl w-[18rem] h-[27rem] md:w-[25rem] shadow-lg shadow-black/60 md:h-[29rem] p-4">
         <div className="mx-auto mt-4 flex rounded-2xl w-[16rem] h-[15rem]  md:w-[21rem] md:h-[14rem] select-none overflow-hidden">
@@ -64,7 +57,7 @@ const Services = () => {
       className="justify-center grid gap-12 pt-22 xl:pt-34 xl:pb-30"
     >
       <h1 className="text-4xl text-current flex justify-center items-center font-semibold font-poppins">
-        Meus Serviços
+        Como posso te ajudar?
       </h1>
       {/* cards */}
       <div className="grid md:grid-cols-2 xl:grid-cols-3 grid-cols-1 justify-center gap-22 xl:px-0 md:gap-16 md:px-12 md:pr-16 xl:pr-0 xl:gap-22">

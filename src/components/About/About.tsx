@@ -9,14 +9,14 @@ const About = () => {
   return (
     <div
       id="about"
-      className="relative overflow-hidden xl:pb-38 xl:pt-6 pt-22 mt-[8rem] md:mt-[5rem]"
+      className={`relative overflow-hidden xl:pb-28 xl:pt-14 pt-22 mt-[8rem] md:mt-[5rem] ${theme === "dark" ? "bg-[#00BC7D]" : "bg-[#e7dede]"}`}
     >
       {/* Conteúdo */}
       <div className="relative z-10 justify-center grid gap-14">
         <h1
           className={`${theme === "dark" ? "text-[#f2f2f2]" : "text-black"} text-4xl flex justify-center items-center font-semibold font-poppins`}
         >
-          Sobre mim
+          Quem sou eu?
         </h1>
         <div className="flex flex-col xl:flex-row items-center md:justify-between gap-12 md:gap-12">
           <div
