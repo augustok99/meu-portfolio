@@ -1,7 +1,8 @@
 import React from "react";
 import { useThemeContext } from "../../context/useThemeContext";
 import { FiCheckCircle } from "react-icons/fi";
-import { motion, scale } from "framer-motion";
+import { motion } from "framer-motion";
+import { useInViewFade } from "../../hooks/useInViewFade";
 
 interface StackProps {
   icon: React.ReactNode;
@@ -32,6 +33,8 @@ function Stack({ icon, description }: StackProps) {
 
 const StackSection = () => {
   const { theme } = useThemeContext();
+  const { ref, visible } = useInViewFade<HTMLImageElement>();
+
   return (
     <div
       id="stack"
@@ -43,14 +46,45 @@ const StackSection = () => {
       {/* cards */}
       <div className="flex gap-3">
         <motion.img
+          ref={ref}
           src="../../../imgs/Astronaut.svg"
           alt="Astronauta desenvolvendo"
-          animate={{ y: [0, -20, 0], rotate: [0, 3, -3, 0] }}
-          transition={{ duration: 8, repeat: Infinity }}
-          className="w-73 md:w-96 xl:w-[28rem] select-none pointer-events-none"
+          initial={{ opacity: 0, x: -50 }}
+          animate={
+            visible
+              ? {
+                  opacity: 1,
+                  x: 0,
+                  y: [0, -20, 0],
+                  rotate: [0, 2, -2, 0],
+                }
+              : { opacity: 0, x: -50 }
+          }
+          transition={{
+            duration: 0.8,
+            ease: "easeOut",
+            y: { duration: 8, repeat: Infinity },
+            rotate: { duration: 8, repeat: Infinity, delay: 0.8 },
+          }}
+          className="w-73 md:w-96 xl:w-[30rem] select-none pointer-events-none"
         />
 
-        <div className="flex items-center justify-center bg-emerald-400 gap-7 rounded-2xl w-[18rem] h-[32rem] md:w-[34rem] shadow-lg shadow-black/60 md:h-[28rem]">
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={
+            visible
+              ? {
+                  opacity: 1,
+                  x: 0,
+                }
+              : { opacity: 0, x: 50 }
+          }
+          transition={{
+            duration: 0.8,
+            ease: "easeOut",
+          }}
+          className="flex items-center justify-center bg-emerald-400 gap-7 rounded-2xl w-[18rem] h-[32rem] md:w-[34rem] shadow-lg shadow-black/60 md:h-[28rem]"
+        >
           <div className="flex flex-col justify-center gap-22 md:gap-16 md:px-12 md:pr-16 xl:gap-8 xl:px-0">
             <p className="font-poppins text-[1.6rem] font-bold flex justify-center pb-4">
               <span>
@@ -112,7 +146,7 @@ const StackSection = () => {
               description="Entrega dentro do prazo combinado"
             />
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
