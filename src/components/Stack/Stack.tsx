@@ -1,50 +1,31 @@
 import React from "react";
-import { motion } from "framer-motion";
-import { MdRocketLaunch } from "react-icons/md";
 import { useThemeContext } from "../../context/useThemeContext";
-import { MdComputer } from "react-icons/md";
-import { PiCoffeeFill } from "react-icons/pi";
+import { FiCheckCircle } from "react-icons/fi";
+import { motion, scale } from "framer-motion";
 
 interface StackProps {
   icon: React.ReactNode;
-  title: string;
   description: string;
 }
 
-function Stack({ icon, title, description }: StackProps) {
+function Stack({ icon, description }: StackProps) {
   return (
     <motion.div
-      whileTap={{ scale: 0.95 }}
-      whileHover={{ scale: 1.04 }}
-      style={{
-        cursor: "pointer",
-        backfaceVisibility: "hidden",
-      }}
-      className="rounded-2xl text-left"
+      whileHover={{ scale: 1.03 }}
+      className="rounded-2xl text-left flex cursor-pointer flex-row items-center gap-2"
     >
-      <motion.div className="flex flex-col items-center bg-[#00BC7D] gap-4 rounded-2xl w-[18rem] h-[27rem] md:w-[25rem] shadow-lg shadow-black/60 md:h-[29rem] p-4">
-        <div className="mx-auto mt-4 flex rounded-2xl w-[16rem] h-[15rem]  md:w-[21rem] md:h-[14rem] select-none overflow-hidden">
-          <div className="w-full h-full rounded-2xl bg-white/7 flex items-center justify-center text-6xl text-current">
-            {icon}
-          </div>
-        </div>
-        <div className="px-4 mt-2">
-          <h3 className="text-xl font-bold font-poppins text-current text-center mb-2 select-none">
-            {title}
-          </h3>
-          <p
-            lang="pt-BR"
-            style={{
-              hyphens: "none",
-              WebkitHyphens: "none",
-              msHyphens: "none",
-            }}
-            className="text-md font-semibold font-poppins select-none wrap-break-word tracking-[-0.12px] mt-5 md:tracking-[-0.08px] [word-spacing:-0.06em]"
-          >
-            {description}
-          </p>
-        </div>
-      </motion.div>
+      <div className="w-8 h-8 flex items-center justify-center">{icon}</div>
+      <p
+        lang="pt-BR"
+        style={{
+          hyphens: "none",
+          WebkitHyphens: "none",
+          msHyphens: "none",
+        }}
+        className="text-lg font-bold font-poppins select-none "
+      >
+        {description}
+      </p>
     </motion.div>
   );
 }
@@ -60,35 +41,77 @@ const StackSection = () => {
         Por que trabalhar comigo?
       </h1>
       {/* cards */}
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 grid-cols-1 justify-center gap-22 xl:px-0 md:gap-16 md:px-12 md:pr-16 xl:pr-0 xl:gap-22">
-        <Stack
-          icon={
-            <PiCoffeeFill
-              className={` ${theme === "dark" ? "text-[#f2f2f2]" : "text-black"} size-18`}
-            />
-          }
-          title="UI/UX & Landing Pages"
-          description="Desenvolvimento de interfaces de usuário intuitivas e responsivas, Landing pages profissionais focando na experiência do usuário."
+      <div className="flex gap-3">
+        <motion.img
+          src="../../../imgs/Astronaut.svg"
+          alt="Astronauta desenvolvendo"
+          animate={{ y: [0, -20, 0], rotate: [0, 3, -3, 0] }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="w-73 md:w-96 xl:w-[28rem] select-none pointer-events-none"
         />
-        <Stack
-          icon={
-            <MdComputer
-              className={` ${theme === "dark" ? "text-[#f2f2f2]" : "text-black"} size-18`}
+
+        <div className="flex items-center justify-center bg-emerald-400 gap-7 rounded-2xl w-[18rem] h-[32rem] md:w-[34rem] shadow-lg shadow-black/60 md:h-[28rem]">
+          <div className="flex flex-col justify-center gap-22 md:gap-16 md:px-12 md:pr-16 xl:gap-8 xl:px-0">
+            <p className="font-poppins text-[1.6rem] font-bold flex justify-center pb-4">
+              <span>
+                O que você pode esperar de{" "}
+                <span className="text-[#f2f2f2] dark:text-[#13094E]">
+                  mim...
+                </span>
+              </span>
+            </p>
+
+            <Stack
+              icon={
+                <FiCheckCircle
+                  className={theme === "dark" ? "text-[#f2f2f2]" : "text-black"}
+                  size={24}
+                  strokeWidth={2.6}
+                />
+              }
+              description="Código limpo, organizado"
             />
-          } // Placeholder icon
-          title="Aplicações Web"
-          description="Criação de aplicações web modernas utilizando as melhores práticas e tecnologias atuais, feitas sob medida para suas necessidades."
-        />
-        <div className="md:col-span-2 md:flex md:justify-center xl:col-span-1">
-          <Stack
-            icon={
-              <MdRocketLaunch
-                className={` ${theme === "dark" ? "text-[#f2f2f2]" : "text-black"} size-18`}
-              />
-            } // Placeholder icon
-            title="Performance & Deploy"
-            description="Otimização de performance e deploy de aplicações para produção, preocupação de quem entende a importância de um site rápido e eficiente."
-          />
+            <Stack
+              icon={
+                <FiCheckCircle
+                  className={theme === "dark" ? "text-[#f2f2f2]" : "text-black"}
+                  size={24}
+                  strokeWidth={2.6}
+                />
+              }
+              description="Foco total na experiência do usuário"
+            />
+            <Stack
+              icon={
+                <FiCheckCircle
+                  className={theme === "dark" ? "text-[#f2f2f2]" : "text-black"}
+                  size={24}
+                  strokeWidth={2.6}
+                />
+              }
+              description="Interface moderna e minimalista"
+            />
+            <Stack
+              icon={
+                <FiCheckCircle
+                  className={theme === "dark" ? "text-[#f2f2f2]" : "text-black"}
+                  size={24}
+                  strokeWidth={2.6}
+                />
+              }
+              description="Suporte e ajustes pós-entrega"
+            />
+            <Stack
+              icon={
+                <FiCheckCircle
+                  className={theme === "dark" ? "text-[#f2f2f2]" : "text-black"}
+                  size={24}
+                  strokeWidth={2.6}
+                />
+              }
+              description="Entrega dentro do prazo combinado"
+            />
+          </div>
         </div>
       </div>
     </div>
