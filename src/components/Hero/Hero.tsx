@@ -1,11 +1,17 @@
 import "../../index.css";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import { CodeXml, Home, Grid, User, Mail } from "lucide-react";
 import { handleSmoothScroll } from "../../utils/smooth";
 import useActiveSection from "../../hooks/useActiveSection";
 
 const Hero = () => {
   const active = useActiveSection(["home", "projects", "about", "contact"]);
+
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.debug("[Hero] active section:", active);
+  }, [active]);
 
   return (
     <div
