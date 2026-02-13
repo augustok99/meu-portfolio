@@ -85,7 +85,7 @@ function ProjectCard({
         whileHover={{ scale: 1.04 }}
         className="flex flex-col items-center bg-[#00BC7D] gap-4 rounded-2xl w-[18rem] h-[27rem] md:w-[25rem] shadow-lg shadow-black/60 md:h-[31rem] p-4"
       >
-        <div className="mx-auto mt-4 flex rounded-2xl w-[16rem] h-[15rem]  md:w-[21rem] md:h-[14rem] select-none overflow-hidden">
+        <div className="mx-auto mt-4 flex rounded-2xl w-[16rem] h-[15rem] md:w-[21rem] md:h-[14rem] select-none overflow-hidden">
           {imgSrc ? (
             <motion.img
               src={imgSrc}
@@ -123,7 +123,7 @@ function ProjectCard({
               WebkitHyphens: "none",
               msHyphens: "none",
             }}
-            className="font-semibold font-poppins select-none wrap-break-word tracking-[-0.12px] md:tracking-[-0.08px] [word-spacing:-0.06em]"
+            className="font-semibold font-poppins select-none wrap-break-word tracking-[-0.12px] md:tracking-[-0.08px] [word-spacing:-0.06em] pb-3 md:pb-0"
           >
             {description}
           </p>
@@ -159,7 +159,7 @@ export function CardProject() {
       id="projects"
       className="justify-center grid gap-12 pt-8 md:pt-12 xl:pt-24 xl:pb-48"
     >
-      <h1 className="text-4xl text-current flex justify-center items-center font-semibold font-poppins">
+      <h1 className="md:text-4xl text-3xl text-current flex justify-center items-center font-semibold font-poppins">
         Meus Projetos
       </h1>
       {/* Cards */}

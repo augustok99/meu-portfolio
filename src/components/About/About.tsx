@@ -14,7 +14,7 @@ const About = () => {
       {/* Conteúdo */}
       <div className="relative z-10 justify-center grid gap-14">
         <h1
-          className={`${theme === "dark" ? "text-[#f2f2f2]" : "text-black"} text-4xl flex justify-center items-center font-semibold font-poppins`}
+          className={`${theme === "dark" ? "text-[#f2f2f2]" : "text-black"} text-3xl md:text-4xl flex justify-center items-center font-semibold font-poppins`}
         >
           Quem sou eu?
         </h1>
