@@ -12,6 +12,9 @@ import {
 } from "react-icons/si";
 import { RiFileExcel2Line } from "react-icons/ri";
 import type { IconType } from "react-icons";
+import useIsMobile from "../../hooks/useIsMobile";
+
+// eslint-disable-next-line react-hooks/rules-of-hooks
 
 const Icons = ({ icons }: { icons: { icon: IconType; name: string }[] }) => {
   // [] TypeScript dizendo o que espera do retorno da arrow function e que icons é um array de objetos daquele tipo, não um array vazio.
@@ -50,6 +53,7 @@ function ProjectCard({
     ease: "easeInOut",
     leaveGrace: 3000,
   });
+  const isMobile = useIsMobile();
 
   const imgControls = useAnimation();
 
@@ -129,6 +133,62 @@ function ProjectCard({
     </motion.div>
   );
 
+  if (isMobile) {
+    const inner = (
+      <div
+        ref={ref as React.RefObject<HTMLDivElement>}
+        style={{
+          hyphens: "none",
+          WebkitHyphens: "none",
+          msHyphens: "none",
+          cursor: "pointer",
+        }}
+        className="grid rounded-2xl text-left"
+      >
+        <div className="flex flex-col items-center bg-[#00BC7D] gap-4 rounded-2xl w-[18rem] h-[27rem] md:w-[25rem] shadow-lg shadow-black/60 md:h-[31rem] p-4">
+          <div className="mx-auto mt-4 flex rounded-2xl w-[16rem] h-[15rem] md:w-[21rem] md:h-[14rem] select-none overflow-hidden">
+            {imgSrc ? (
+              <img
+                src={imgSrc}
+                loading="lazy"
+                decoding="async"
+                draggable={false}
+                onDragStart={(e) => e.preventDefault()}
+                className="rounded-xl w-full h-full object-cover select-none"
+                alt=""
+                style={{
+                  transformOrigin: "center",
+                  willChange: "transform",
+                  backfaceVisibility: "hidden",
+                }}
+              />
+            ) : (
+              <div className="w-full h-full rounded-2xl bg-white/5 flex items-center justify-center text-xs text-white/60">
+                Sem imagem
+              </div>
+            )}
+          </div>
+          <div className="px-4 mt-2 flex flex-col flex-1">
+            {title && (
+              <h3 className="text-xl font-bold font-poppins text-current text-center mb-2">
+                {title}
+              </h3>
+            )}
+            <p
+              lang="pt-BR"
+              className="font-semibold font-poppins text-left select-none text-[0.94rem] tracking-[-0.12px] md:tracking-[-0.08px] [word-spacing:-0.06em] pb-3 md:pb-0"
+            >
+              {description}
+            </p>
+            {/* ICONES */}
+            <div className="mt-auto flex gap-3 pb-4">{icon}</div>
+          </div>
+        </div>
+      </div>
+    );
+    return inner;
+  }
+
   if (href) {
     const isExternal =
       href.startsWith("http://") || href.startsWith("https://");
@@ -158,7 +218,7 @@ export function CardProject() {
         Meus Projetos
       </h1>
       {/* Cards */}
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 grid-cols-1 justify-center gap-22 xl:px-0 md:gap-16 md:px-12 md:pr-16 xl:pr-0 xl:gap-22">
+      <div className="grid md:grid-cols-2 xl:grid-cols-3 grid-cols-1 justify-center gap-22 xl:px-0 md:gap-16 md:my-22 md:px-12 md:pr-16 xl:pr-0 xl:gap-22">
         <ProjectCard
           imgSrc="../../../imgs/img_bot_discord_deals.jpg"
           title="Discord Deals Offerts"

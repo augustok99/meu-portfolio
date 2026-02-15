@@ -12,7 +12,7 @@ const About = () => {
       className={`relative overflow-hidden xl:pb-28 xl:pt-14 pt-6 mt-8 md:mt-20 ${theme === "dark" ? "bg-[#00BC7D]" : "bg-[#e7dede]"}`}
     >
       {/* Conteúdo */}
-      <div className="relative z-10 justify-center grid gap-14">
+      <div className="relative z-10 justify-center grid gap-14 md:my-22">
         <h1
           className={`${theme === "dark" ? "text-[#f2f2f2]" : "text-black"} text-3xl md:text-4xl flex justify-center items-center font-semibold font-poppins`}
         >

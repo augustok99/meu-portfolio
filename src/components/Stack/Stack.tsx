@@ -52,13 +52,13 @@ const StackSection = () => {
   return (
     <div
       id="stack"
-      className="justify-center md:flex md:flex-col md:items-center gap-12 pt-20 md:pt-12 xl:pt-20 xl:pb-48"
+      className="justify-center md:flex md:flex-col md:items-center gap-12 pt-20 md:pt-[4rem] xl:pt-20 xl:pb-48"
     >
       <h1 className="text-3xl md:text-4xl text-center flex justify-center items-center font-semibold font-poppins">
         Por que trabalhar comigo?
       </h1>
       {/* cards */}
-      <div className="flex flex-col items-center mx-auto pt-5 md:pt-0 md:mx-0 md:flex gap-3">
+      <div className="flex flex-col xl:flex-row items-center mx-auto pt-5 md:pt-0 md:mx-0 md:flex gap-3">
         {isMobile ? (
           <img
             ref={ref}
@@ -173,7 +173,7 @@ const StackSection = () => {
           </div>
         ) : (
           <div className="flex items-center justify-center w-[18rem] h-[27rem] bg-emerald-400 gap-7 rounded-2xl md:w-[34rem] shadow-lg shadow-black/60 md:h-[28rem]">
-            <div className="flex flex-col justify-center gap-22 md:gap-16 md:px-12 md:pr-16 xl:gap-8 xl:px-0">
+            <div className="flex flex-col justify-center gap-22 md:gap-6 md:px-12 md:pr-16 xl:gap-8 xl:px-0">
               <p className="hidden md:flex font-poppins font-bold justify-center pb-4 text-2xl">
                 <span>
                   O que você pode esperar de{" "}

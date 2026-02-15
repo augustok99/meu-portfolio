@@ -13,12 +13,13 @@ const Hero = () => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + window.innerHeight;
       const docHeight = document.documentElement.scrollHeight;
-      const atBottom = scrollPosition >= docHeight - 80; // small buffer to hide near the end
+      const atBottom = scrollPosition >= docHeight - 80; // pequeno buffer para ocultar perto do final
       setShowMobileNav(!atBottom);
     };
 
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
+    // retorno de cleanup para remover o event listener quando o componente for desmontado, evitando vazamentos de memória e comportamento inesperado.
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 

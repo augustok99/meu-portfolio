@@ -12,9 +12,9 @@ const Contact = () => {
     <div
       id="contact"
       onClick={() => handleSmoothScroll({ id: "contact" })}
-      className="flex pt-5 md:pt-[9rem] xl:pt-[2rem] flex-col md:gap-2 xl:gap-14 md:mt-0 mt-8"
+      className="flex pt-2 md:pt-[4rem] xl:pt-[2rem] flex-col md:gap-2 xl:gap-14 md:mt-0 mt-8"
     >
-      <h1 className="text-current text-4xl flex justify-center items-center font-semibold font-poppins">
+      <h1 className="hidden text-current text-4xl md:flex justify-center items-center font-semibold font-poppins">
         Contato
       </h1>
       <div className="grid">

@@ -37,7 +37,7 @@ const Button = () => {
       </div>
 
       {/* Mobile CTAs: visíveis somente em telas pequenas */}
-      <div className="md:hidden flex justify-center right-5 z-50">
+      <div className="md:hidden py-16 flex justify-center right-5 z-50">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
